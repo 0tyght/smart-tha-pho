@@ -21,7 +21,7 @@ const INITIAL_STATS = {
 const REQUEST_STATUS = {
   SUBMITTED: ["รอตรวจ", "amber"],
   UNDER_REVIEW: ["กำลังตรวจ", "blue"],
-  NEED_MORE_INFO: ["รอเจ้าของแก้ไข", "rose"],
+  NEED_MORE_INFO: ["รอเจ้าหน้าที่ดำเนินการ", "blue"],
   APPROVED: ["รับรองแล้ว", "green"],
   REJECTED: ["ไม่ผ่าน", "gray"],
   CANCELLED: ["ยกเลิก", "gray"],
@@ -241,7 +241,7 @@ function LatestCitizenData({ items, navigate }) {
         <div>
           <span><Icon name="line" /> ช่องทางประชาชน</span>
           <h2>ข้อมูลล่าสุดจาก LINE Official Account</h2>
-          <p>เปิดดูรายการเพื่อรับตรวจ ส่งกลับแก้ไข หรือรับรองเข้าทะเบียน</p>
+          <p>เปิดดูรายการเพื่อรับตรวจ แก้ไขข้อมูล หรือรับรองเข้าทะเบียน</p>
         </div>
         <button type="button" onClick={() => navigate("registrations")}>เปิดศูนย์รับข้อมูล</button>
       </header>

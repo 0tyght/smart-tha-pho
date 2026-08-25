@@ -17,7 +17,7 @@ import { registrationReviewPolicy } from "../domain/RegistrationReviewPolicy.js"
 const STATUS_LABELS = {
   SUBMITTED: "รอตรวจสอบ",
   UNDER_REVIEW: "กำลังตรวจ",
-  NEED_MORE_INFO: "รอเจ้าของแก้ไข",
+  NEED_MORE_INFO: "รอเจ้าหน้าที่ดำเนินการ",
   APPROVED: "รับรองแล้ว",
   REJECTED: "ไม่ผ่านการตรวจสอบ",
   CANCELLED: "ยกเลิกแล้ว",
@@ -26,7 +26,7 @@ const STATUS_LABELS = {
 const STATUS_TONES = {
   SUBMITTED: "amber",
   UNDER_REVIEW: "blue",
-  NEED_MORE_INFO: "rose",
+  NEED_MORE_INFO: "blue",
   APPROVED: "green",
   REJECTED: "gray",
   CANCELLED: "gray",
@@ -329,7 +329,7 @@ function DetailPanel({
   onDownload,
 }) {
   const closed = detail ? registrationReviewPolicy.isClosed(detail.status) : false;
-  const noteRequired = ["NEED_MORE_INFO", "REJECTED"].includes(decision);
+  const noteRequired = decision === "REJECTED";
 
   return (
     <aside className={`inbox-detail ${item ? "is-open" : ""}`} aria-label="รายละเอียดข้อมูล">
@@ -392,7 +392,6 @@ function DetailPanel({
                     <select value={decision} onChange={(event) => setDecision(event.target.value)} required>
                       <option value="">เลือกการดำเนินการ</option>
                       {detail.status !== "UNDER_REVIEW" ? <option value="UNDER_REVIEW">รับเข้าตรวจสอบ</option> : null}
-                      <option value="NEED_MORE_INFO">ส่งกลับให้เจ้าของแก้ไข</option>
                       <option value="APPROVED">รับรองข้อมูล</option>
                       <option value="REJECTED">ไม่ผ่านการตรวจสอบ</option>
                     </select>
@@ -403,7 +402,7 @@ function DetailPanel({
                       value={note}
                       onChange={(event) => setNote(event.target.value)}
                       required={noteRequired}
-                      placeholder={noteRequired ? "ระบุสาเหตุหรือสิ่งที่ต้องแก้ไขอย่างชัดเจน" : "เพิ่มหมายเหตุเมื่อจำเป็น"}
+                      placeholder={noteRequired ? "ระบุเหตุผลที่ไม่รับรองข้อมูลอย่างชัดเจน" : "บันทึกรายละเอียดการตรวจสอบเมื่อจำเป็น"}
                       rows="3"
                       maxLength="500"
                     />
@@ -585,8 +584,8 @@ export default function RegistrationsPage({ token }) {
   function submitDecision(event) {
     event.preventDefault();
     if (!selected || !decision) return;
-    if (["NEED_MORE_INFO", "REJECTED"].includes(decision) && !note.trim()) {
-      setMessage("กรุณาระบุเหตุผลหรือข้อมูลที่ต้องแก้ไขก่อนส่งผลกลับเจ้าของสัตว์เลี้ยง");
+    if (decision === "REJECTED" && !note.trim()) {
+      setMessage("กรุณาระบุเหตุผลที่ไม่รับรองข้อมูลก่อนบันทึกผลการตรวจสอบ");
       return;
     }
     void updateStatus(selected, decision, note.trim());
@@ -623,7 +622,7 @@ export default function RegistrationsPage({ token }) {
         <SummaryCard label="งานที่ยังไม่เสร็จ" value={pendingTotal} detail="ข้อมูลจาก LINE Official Account" tone="primary" />
         <SummaryCard label="รอตรวจสอบ" value={summary.submitted} detail="ยังไม่มีเจ้าหน้าที่รับงาน" tone="amber" />
         <SummaryCard label="กำลังตรวจ" value={summary.underReview} detail="อยู่ระหว่างตรวจข้อมูลและหลักฐาน" tone="blue" />
-        <SummaryCard label="รอเจ้าของแก้ไข" value={summary.needMoreInfo} detail="แจ้งผลกลับผ่าน LINE แล้ว" tone="rose" />
+        <SummaryCard label="รอเจ้าหน้าที่ดำเนินการ" value={summary.needMoreInfo} detail="รายการเดิมที่ต้องตรวจสอบต่อ" tone="blue" />
         <SummaryCard label="เร่งด่วน" value={summary.urgent} detail="รอตรวจตั้งแต่ 3 วันขึ้นไป" tone="danger" />
       </section>
 
@@ -651,7 +650,6 @@ export default function RegistrationsPage({ token }) {
               <option value="">ทุกสถานะ</option>
               <option value="SUBMITTED">รอตรวจสอบ</option>
               <option value="UNDER_REVIEW">กำลังตรวจ</option>
-              <option value="NEED_MORE_INFO">รอเจ้าของแก้ไข</option>
               <option value="APPROVED">รับรองแล้ว</option>
               <option value="REJECTED">ไม่ผ่านการตรวจสอบ</option>
               <option value="CANCELLED">ยกเลิกแล้ว</option>
