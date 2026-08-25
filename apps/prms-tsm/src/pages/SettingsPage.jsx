@@ -7,6 +7,7 @@ import {
 } from "../components/common/PageUI.jsx";
 import MfaSettingsCard from "../components/MfaSettingsCard.jsx";
 import { createPrmsApplication } from "../composition-root/createPrmsApplication.js";
+import { useModalDialog } from "../hooks/useModalDialog.js";
 
 const roleLabels = {
   ADMIN: "ผู้ดูแลระบบ",
@@ -102,6 +103,7 @@ export default function SettingsPage({ token }) {
   const [showUserForm, setShowUserForm] = useState(false);
   const [userForm, setUserForm] = useState({ fullName: "", email: "", password: "", role: "OFFICER", villageId: "" });
   const [newVillage, setNewVillage] = useState({ villageNo: "", name: "" });
+  const userDialogRef = useModalDialog({ isOpen: showUserForm, isBusy: savingId === "new-user", onClose: () => setShowUserForm(false) });
 
   const load = async () => {
     setLoading(true);
@@ -252,7 +254,7 @@ export default function SettingsPage({ token }) {
   return (
     <div className="settings-v8">
       <PageHead
-        eyebrow="System Administration"
+        eyebrow="การดูแลระบบ"
         title="การตั้งค่าระบบ"
         detail="จัดการความปลอดภัย การเชื่อมต่อบริการ และสิทธิ์ของเจ้าหน้าที่จากพื้นที่เดียว"
         actions={
@@ -296,7 +298,7 @@ export default function SettingsPage({ token }) {
       <section className="settings-v8__services">
         <div className="settings-section-heading">
           <div>
-            <span>System Health</span>
+            <span>สถานะระบบ</span>
             <h2>สถานะบริการและช่องทางเชื่อมต่อ</h2>
             <p>
               แสดงสถานะจริงจาก API ฐานข้อมูล และคิวการแจ้งเตือน
@@ -386,7 +388,7 @@ export default function SettingsPage({ token }) {
       <section className="settings-users-card">
         <header className="settings-users-card__head">
           <div>
-            <span>Access Management</span>
+            <span>การจัดการสิทธิ์</span>
             <h2>บัญชีเจ้าหน้าที่และบทบาท</h2>
             <p>
               กำหนดระดับสิทธิ์ พื้นที่รับผิดชอบ และสถานะการเข้าใช้งาน
@@ -538,12 +540,12 @@ export default function SettingsPage({ token }) {
       </section>
 
       <section className="settings-users-card settings-villages-card">
-        <header className="settings-users-card__head"><div><span>Area Management</span><h2>ข้อมูลหมู่บ้าน</h2><p>กำหนดชื่อ เลขหมู่ และสถานะที่ใช้กับแบบฟอร์ม ตัวกรอง แดชบอร์ด และแผนที่</p></div></header>
+        <header className="settings-users-card__head"><div><span>การจัดการพื้นที่</span><h2>ข้อมูลหมู่บ้าน</h2><p>กำหนดชื่อ เลขหมู่ และสถานะที่ใช้กับแบบฟอร์ม ตัวกรอง แดชบอร์ด และแผนที่</p></div></header>
         <form className="settings-village-create" onSubmit={createVillage}><label>เลขหมู่<input type="number" min="1" max="99" value={newVillage.villageNo} onChange={(event) => setNewVillage({ ...newVillage, villageNo: event.target.value })} required /></label><label>ชื่อที่แสดง<input value={newVillage.name} onChange={(event) => setNewVillage({ ...newVillage, name: event.target.value })} placeholder="เช่น หมู่ที่ 12" required /></label><button type="submit" className="prms-button prms-button--primary" disabled={savingId === "new-village"}>{savingId === "new-village" ? "กำลังเพิ่ม…" : "เพิ่มหมู่บ้าน"}</button></form>
         <div className="settings-village-grid">{villages.map((village) => <article key={village.id} className={!village.isActive ? "is-disabled" : ""}><div><strong>หมู่ {village.villageNo}</strong><span>{village.name}</span></div><button type="button" className={`settings-user-status ${village.isActive ? "is-active" : "is-disabled"}`} disabled={savingId === `village-${village.id}`} onClick={() => void updateVillage(village, { isActive: !village.isActive })}><i /><span>{village.isActive ? "ใช้งาน" : "ปิดใช้งาน"}</span></button></article>)}</div>
       </section>
 
-      {showUserForm ? <div className="modal-backdrop" role="presentation"><form className="service-dialog core-dialog" onSubmit={createUser}><div className="dialog-head"><div><p className="eyebrow">บัญชีเจ้าหน้าที่</p><h2>เพิ่มบัญชีใหม่</h2></div><button type="button" aria-label="ปิด" onClick={() => setShowUserForm(false)}>×</button></div><div className="core-form-grid"><label>ชื่อ–นามสกุล<input value={userForm.fullName} onChange={(event) => setUserForm({ ...userForm, fullName: event.target.value })} required /></label><label>อีเมล<input type="email" value={userForm.email} onChange={(event) => setUserForm({ ...userForm, email: event.target.value })} required /></label><label>รหัสผ่านเริ่มต้น<input type="password" minLength="8" value={userForm.password} onChange={(event) => setUserForm({ ...userForm, password: event.target.value })} required /></label><label>บทบาท<select value={userForm.role} onChange={(event) => setUserForm({ ...userForm, role: event.target.value, villageId: event.target.value === "ADMIN" ? "" : userForm.villageId })}><option value="ADMIN">ผู้ดูแลระบบ</option><option value="OFFICER">เจ้าหน้าที่</option><option value="VIEWER">ผู้ตรวจสอบ</option></select></label>{userForm.role !== "ADMIN" ? <label>พื้นที่รับผิดชอบ<select value={userForm.villageId} onChange={(event) => setUserForm({ ...userForm, villageId: event.target.value })}><option value="">ทุกหมู่บ้าน</option>{villages.filter((village) => village.isActive).map((village) => <option key={village.id} value={village.id}>{village.name}</option>)}</select></label> : null}</div><p className="core-form-note">แจ้งรหัสผ่านเริ่มต้นผ่านช่องทางที่ปลอดภัย และให้เจ้าหน้าที่เปลี่ยนรหัสผ่านก่อนใช้งานจริง</p><div className="dialog-actions"><button type="button" onClick={() => setShowUserForm(false)}>ยกเลิก</button><button type="submit" className="approve" disabled={savingId === "new-user"}>{savingId === "new-user" ? "กำลังเพิ่ม…" : "เพิ่มบัญชี"}</button></div></form></div> : null}
+      {showUserForm ? <div className="modal-backdrop" role="presentation"><form ref={userDialogRef} className="service-dialog core-dialog" onSubmit={createUser} role="dialog" aria-modal="true" aria-labelledby="user-dialog-title" aria-busy={savingId === "new-user"} tabIndex={-1}><div className="dialog-head"><div><p className="eyebrow">บัญชีเจ้าหน้าที่</p><h2 id="user-dialog-title">เพิ่มบัญชีใหม่</h2></div><button type="button" aria-label="ปิด" onClick={() => setShowUserForm(false)} disabled={savingId === "new-user"}>×</button></div><div className="core-form-grid"><label>ชื่อ–นามสกุล<input value={userForm.fullName} onChange={(event) => setUserForm({ ...userForm, fullName: event.target.value })} required /></label><label>อีเมล<input type="email" value={userForm.email} onChange={(event) => setUserForm({ ...userForm, email: event.target.value })} required /></label><label>รหัสผ่านเริ่มต้น<input type="password" minLength="8" value={userForm.password} onChange={(event) => setUserForm({ ...userForm, password: event.target.value })} required /></label><label>บทบาท<select value={userForm.role} onChange={(event) => setUserForm({ ...userForm, role: event.target.value, villageId: event.target.value === "ADMIN" ? "" : userForm.villageId })}><option value="ADMIN">ผู้ดูแลระบบ</option><option value="OFFICER">เจ้าหน้าที่</option><option value="VIEWER">ผู้ตรวจสอบ</option></select></label>{userForm.role !== "ADMIN" ? <label>พื้นที่รับผิดชอบ<select value={userForm.villageId} onChange={(event) => setUserForm({ ...userForm, villageId: event.target.value })}><option value="">ทุกหมู่บ้าน</option>{villages.filter((village) => village.isActive).map((village) => <option key={village.id} value={village.id}>{village.name}</option>)}</select></label> : null}</div><p className="core-form-note">แจ้งรหัสผ่านเริ่มต้นผ่านช่องทางที่ปลอดภัย และให้เจ้าหน้าที่เปลี่ยนรหัสผ่านก่อนใช้งานจริง</p><div className="dialog-actions"><button type="button" onClick={() => setShowUserForm(false)} disabled={savingId === "new-user"}>ยกเลิก</button><button type="submit" className="approve" disabled={savingId === "new-user"}>{savingId === "new-user" ? "กำลังเพิ่ม…" : "เพิ่มบัญชี"}</button></div></form></div> : null}
     </div>
   );
 }

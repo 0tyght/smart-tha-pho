@@ -14,6 +14,7 @@ import {
 } from "../common/PageUI.jsx";
 import { petStatusPolicy } from "../../domain/PetStatusPolicy.js";
 import { petDirectoryPolicy } from "../../domain/PetDirectoryPolicy.js";
+import { useModalDialog } from "../../hooks/useModalDialog.js";
 import "./PetDirectory.css";
 
 const PET_STATUSES = ["ACTIVE", "MISSING", "TRANSFERRED", "MOVED_OUT", "DECEASED"];
@@ -134,6 +135,7 @@ function ServiceDialog({
   const [note, setNote] = useState("");
   const [message, setMessage] = useState("");
   const [busy, setBusy] = useState(false);
+  const dialogRef = useModalDialog({ onClose, isBusy: busy });
 
   function handleServiceDateChange(event) {
     const value = event.target.value;
@@ -191,23 +193,21 @@ function ServiceDialog({
   }
 
   return (
-    <div
-      className="pet-modal-backdrop"
-      role="presentation"
-      onMouseDown={(event) => {
-        if (event.target === event.currentTarget) {
-          onClose();
-        }
-      }}
-    >
+    <div className="pet-modal-backdrop" role="presentation">
       <form
+        ref={dialogRef}
         className="pet-service-dialog"
         onSubmit={handleSubmit}
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="pet-service-dialog-title"
+        aria-busy={busy}
+        tabIndex={-1}
       >
         <div className="pet-dialog-header">
           <div>
             <p className="eyebrow">บันทึกบริการสัตวแพทย์</p>
-            <h2>{pet.petName}</h2>
+            <h2 id="pet-service-dialog-title">{pet.petName}</h2>
             <p>
               {pet.registrationNo || "ไม่มีเลขทะเบียน"} ·{" "}
               {pet.ownerName}
@@ -388,6 +388,7 @@ function PetRegistryDialog({ pet, api, onClose, onSaved }) {
   });
   const [message, setMessage] = useState("");
   const [busy, setBusy] = useState(false);
+  const dialogRef = useModalDialog({ onClose, isBusy: busy });
 
   useEffect(() => {
     api.get("/api/admin/owners?pageSize=100")
@@ -415,12 +416,12 @@ function PetRegistryDialog({ pet, api, onClose, onSaved }) {
   }
 
   return (
-    <div className="pet-modal-backdrop" role="presentation" onMouseDown={(event) => { if (event.target === event.currentTarget) onClose(); }}>
-      <form className="pet-service-dialog pet-registry-dialog" onSubmit={submit}>
+    <div className="pet-modal-backdrop" role="presentation">
+      <form ref={dialogRef} className="pet-service-dialog pet-registry-dialog" onSubmit={submit} role="dialog" aria-modal="true" aria-labelledby="pet-registry-dialog-title" aria-busy={busy} tabIndex={-1}>
         <div className="pet-dialog-header">
           <div>
             <p className="eyebrow">{pet ? "แก้ไขทะเบียนสัตว์เลี้ยง" : "เพิ่มทะเบียนที่สำนักงานเทศบาล"}</p>
-            <h2>{pet?.petName || "สัตว์เลี้ยงรายใหม่"}</h2>
+            <h2 id="pet-registry-dialog-title">{pet?.petName || "สัตว์เลี้ยงรายใหม่"}</h2>
             <p>{pet ? `${pet.registrationNo} · ${pet.ownerName}` : "ข้อมูลจะเข้าสู่ทะเบียนทางการทันทีโดยบันทึกชื่อเจ้าหน้าที่ผู้ดำเนินการ"}</p>
           </div>
           <button type="button" className="pet-dialog-close" onClick={onClose} aria-label="ปิดหน้าต่าง">×</button>
@@ -457,6 +458,7 @@ function PetLifecycleDialog({ pet, api, onClose, onSaved }) {
   const [healthEdit, setHealthEdit] = useState(null);
   const [message, setMessage] = useState("");
   const [busy, setBusy] = useState(false);
+  const dialogRef = useModalDialog({ onClose, isBusy: busy });
 
   const loadDetail = useCallback(async () => {
     const [petDetail, ownerRows] = await Promise.all([
@@ -506,7 +508,7 @@ function PetLifecycleDialog({ pet, api, onClose, onSaved }) {
       }
       await loadDetail();
       setHealthEdit(null);
-      if (mode !== "health") await onSaved();
+      await onSaved({ close: mode !== "health" });
     } catch (error) {
       setMessage(error.message || "ไม่สามารถบันทึกการเปลี่ยนแปลงได้");
     } finally {
@@ -514,7 +516,7 @@ function PetLifecycleDialog({ pet, api, onClose, onSaved }) {
     }
   }
 
-  return <div className="pet-modal-backdrop" role="presentation"><section className="pet-service-dialog pet-lifecycle-dialog"><div className="pet-dialog-header"><div><p className="eyebrow">ประวัติและวงจรชีวิตสัตว์เลี้ยง</p><h2>{pet.petName}</h2><p>{pet.registrationNo} · เจ้าของปัจจุบัน {pet.ownerName}</p></div><button type="button" className="pet-dialog-close" onClick={onClose} aria-label="ปิดหน้าต่าง">×</button></div>
+  return <div className="pet-modal-backdrop" role="presentation"><section ref={dialogRef} className="pet-service-dialog pet-lifecycle-dialog" role="dialog" aria-modal="true" aria-labelledby="pet-lifecycle-dialog-title" aria-busy={busy} tabIndex={-1}><div className="pet-dialog-header"><div><p className="eyebrow">ประวัติและวงจรชีวิตสัตว์เลี้ยง</p><h2 id="pet-lifecycle-dialog-title">{pet.petName}</h2><p>{pet.registrationNo} · เจ้าของปัจจุบัน {pet.ownerName}</p></div><button type="button" className="pet-dialog-close" onClick={onClose} aria-label="ปิดหน้าต่าง">×</button></div>
     <div className="pet-lifecycle-tabs"><button type="button" className={mode === "status" ? "active" : ""} onClick={() => setMode("status")}>เปลี่ยนสถานะ</button><button type="button" className={mode === "owner" ? "active" : ""} onClick={() => setMode("owner")}>โอนเจ้าของ</button><button type="button" className={mode === "health" ? "active" : ""} onClick={() => { setMode("health"); setHealthEdit(null); }}>ประวัติสุขภาพ</button></div>
     {mode !== "health" ? <form onSubmit={submit} className="pet-lifecycle-form">{mode === "status" ? <label className="pet-form-field"><span>สถานะใหม่</span><select value={nextStatus} onChange={(event) => setNextStatus(event.target.value)}>{allowedStatuses.map((value) => <option key={value} value={value}>{PET_STATUS_LABELS[value]}</option>)}</select></label> : <label className="pet-form-field"><span>เจ้าของใหม่</span><select value={ownerId} onChange={(event) => setOwnerId(event.target.value)} required><option value="">เลือกจากทะเบียนเจ้าของ</option>{owners.map((owner) => <option key={owner.id} value={owner.id}>{owner.fullName} · บ้านเลขที่ {owner.houseNo} หมู่ {owner.villageNo}</option>)}</select></label>}<label className="pet-form-field"><span>วันที่มีผล</span><input type="date" value={effectiveAt} max={today} onChange={(event) => setEffectiveAt(event.target.value)} required /></label><label className="pet-form-field pet-lifecycle-note"><span>{mode === "owner" ? "เหตุผลการโอน" : "เหตุผล/รายละเอียด"}</span><textarea value={note} onChange={(event) => setNote(event.target.value)} minLength="2" maxLength="500" rows="3" required /></label><Notice message={message}/><div className="pet-dialog-actions"><button type="button" className="pet-secondary-button" onClick={onClose}>ยกเลิก</button><button type="submit" className="pet-primary-button" disabled={busy || (mode === "status" && !allowedStatuses.length)}>{busy ? "กำลังบันทึก…" : "ยืนยันการเปลี่ยนแปลง"}</button></div></form> : null}
     {mode === "health" && healthEdit ? <form onSubmit={submit} className="pet-lifecycle-form pet-health-edit">{healthEdit.type === "vaccine" ? <><label className="pet-form-field"><span>ชื่อวัคซีน</span><input value={healthEdit.vaccineName} onChange={(event) => setHealthEdit({ ...healthEdit, vaccineName: event.target.value })} required /></label><label className="pet-form-field"><span>วันที่ฉีด</span><input type="date" value={healthEdit.vaccinatedAt} onChange={(event) => setHealthEdit({ ...healthEdit, vaccinatedAt: event.target.value })} required /></label><label className="pet-form-field"><span>เลขล็อต</span><input value={healthEdit.lotNo || ""} onChange={(event) => setHealthEdit({ ...healthEdit, lotNo: event.target.value })} /></label><label className="pet-form-field"><span>กำหนดครั้งถัดไป</span><input type="date" value={healthEdit.nextDueAt || ""} onChange={(event) => setHealthEdit({ ...healthEdit, nextDueAt: event.target.value })} /></label></> : <label className="pet-form-field"><span>วันที่ทำหมัน</span><input type="date" value={healthEdit.sterilizedAt} onChange={(event) => setHealthEdit({ ...healthEdit, sterilizedAt: event.target.value })} required /></label>}<label className="pet-form-field"><span>หน่วยบริการ</span><input value={healthEdit.providerName || ""} onChange={(event) => setHealthEdit({ ...healthEdit, providerName: event.target.value })} /></label>{healthEdit.type === "sterilization" ? <label className="pet-form-field pet-lifecycle-note"><span>หมายเหตุ</span><textarea rows="3" value={healthEdit.note || ""} onChange={(event) => setHealthEdit({ ...healthEdit, note: event.target.value })} /></label> : null}<Notice message={message}/><div className="pet-dialog-actions"><button type="button" className="pet-secondary-button" onClick={() => setHealthEdit(null)}>ยกเลิกแก้ไข</button><button type="submit" className="pet-primary-button" disabled={busy}>{busy ? "กำลังบันทึก…" : "บันทึกข้อมูลสุขภาพ"}</button></div></form> : null}
@@ -1063,7 +1065,7 @@ export default function PetDirectory({
         />
       )}
 
-      {lifecyclePet && <PetLifecycleDialog pet={lifecyclePet} api={api} onClose={() => setLifecyclePet(null)} onSaved={async () => { setLifecyclePet(null); await loadPets(); }} />}
+      {lifecyclePet && <PetLifecycleDialog pet={lifecyclePet} api={api} onClose={() => setLifecyclePet(null)} onSaved={async ({ close = true } = {}) => { if (close) setLifecyclePet(null); await loadPets(); }} />}
       {registryPet !== undefined && <PetRegistryDialog pet={registryPet} api={api} onClose={() => setRegistryPet(undefined)} onSaved={async () => { setRegistryPet(undefined); await loadPets(); }} />}
     </div>
   );

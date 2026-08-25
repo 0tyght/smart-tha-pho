@@ -600,7 +600,7 @@ export default function RegistrationsPage({ token }) {
   return (
     <div className="inbox-page">
       <PageHead
-        eyebrow="Citizen Data Operations"
+        eyebrow="ข้อมูลจากประชาชน"
         title="ศูนย์รับข้อมูลจากประชาชน"
         detail="รวมข้อมูลขึ้นทะเบียน แก้ไขทะเบียน วัคซีน ทำหมัน สถานะสัตว์ และการโอนเจ้าของที่ประชาชนส่งผ่าน LINE Official Account"
         actions={
