@@ -7,7 +7,10 @@ import {
   encryptLineSecret,
   webhookPathFor,
 } from "../src/modules/line/lineChannelSettings.js";
-import { lineChannelKindForWasteNotification } from "../src/modules/waste/infrastructure/WasteLineNotificationQueue.js";
+import {
+  lineAudienceForWasteNotification,
+  lineChannelKindForWasteNotification,
+} from "../src/modules/waste/infrastructure/WasteLineNotificationQueue.js";
 
 function emptyDatabase() {
   return {
@@ -54,10 +57,10 @@ test("LINE settings test validates token without returning secrets", async () =>
 
   assert.equal(request.url, "https://api.line.me/v2/bot/info");
   assert.equal(request.options.headers.Authorization, "Bearer driver-access-token");
-  assert.equal(result.kind, "DRIVER");
+  assert.equal(result.kind, "SMART");
   assert.equal(result.displayName, "Smart Tha Pho Staff");
   assert.equal(result.basicId, "@123abcde");
-  assert.equal(result.webhookPath, "/api/line/driver-webhook");
+  assert.equal(result.webhookPath, "/api/line/webhook");
   assert.equal(Object.hasOwn(result, "channelSecret"), false);
   assert.equal(Object.hasOwn(result, "channelAccessToken"), false);
 });
@@ -66,7 +69,7 @@ test("LINE settings test validates token without returning secrets", async () =>
 test("LINE settings list never exposes saved secret fields", async () => {
   const registry = new LineChannelSettingsRegistry({ database: emptyDatabase(), cacheTtlMs: 0 });
   const channels = await registry.listSafe();
-  assert.deepEqual(channels.map((item) => item.kind), ["CITIZEN", "DRIVER"]);
+  assert.deepEqual(channels.map((item) => item.kind), ["SMART"]);
   for (const channel of channels) {
     assert.equal(Object.hasOwn(channel, "channelSecret"), false);
     assert.equal(Object.hasOwn(channel, "channelAccessToken"), false);
@@ -75,14 +78,16 @@ test("LINE settings list never exposes saved secret fields", async () => {
   }
 });
 
-test("LINE settings expose separate citizen and driver webhook paths", () => {
+test("all LINE audience aliases resolve to the unified Smart Tha Pho webhook", () => {
+  assert.equal(webhookPathFor("SMART"), "/api/line/webhook");
   assert.equal(webhookPathFor("CITIZEN"), "/api/line/webhook");
-  assert.equal(webhookPathFor("DRIVER"), "/api/line/driver-webhook");
+  assert.equal(webhookPathFor("DRIVER"), "/api/line/webhook");
 });
 
-test("waste notifications use the correct LINE OA", () => {
-  assert.equal(lineChannelKindForWasteNotification("PLAN_ASSIGNMENT"), "DRIVER");
-  assert.equal(lineChannelKindForWasteNotification("COLLECTION_STATUS"), "CITIZEN");
-  assert.equal(lineChannelKindForWasteNotification("CHARGE_NOTICE"), "CITIZEN");
-  assert.equal(lineChannelKindForWasteNotification("PAYMENT_REMINDER"), "CITIZEN");
+test("waste notifications use one OA while retaining the target audience", () => {
+  for (const type of ["PLAN_ASSIGNMENT", "COLLECTION_STATUS", "CHARGE_NOTICE", "PAYMENT_REMINDER"]) {
+    assert.equal(lineChannelKindForWasteNotification(type), "SMART");
+  }
+  assert.equal(lineAudienceForWasteNotification("PLAN_ASSIGNMENT"), "DRIVER");
+  assert.equal(lineAudienceForWasteNotification("COLLECTION_STATUS"), "CITIZEN");
 });

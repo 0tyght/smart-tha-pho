@@ -338,6 +338,11 @@ async function citizenSchedule(citizen) {
   return textMessage(citizenScheduleService.toLineText(result), actions);
 }
 
+export async function resolveWasteAudienceForLineUser(lineUserId) {
+  const actors = await loadActors(lineUserId);
+  return actors.driver ? "DRIVER" : "CITIZEN";
+}
+
 async function citizenLocation(citizen) {
   if (!citizen) return textMessage("ยังไม่พบทะเบียนผู้ใช้บริการเก็บขยะ กรุณาลงทะเบียนก่อน", wasteLineShortcuts.unregistered());
   if (!citizen.routeId) return textMessage("ยังไม่พบเส้นทางรับผิดชอบของทะเบียนนี้", wasteLineShortcuts.citizen());
@@ -1062,7 +1067,7 @@ async function handleDriverSession(event, lineUserId, session, actors) {
             JSON.stringify({
               lineUserId,
               driverCode: driver.driverCode,
-              source: "LINE_DRIVER_OA",
+              source: "SMART_THA_PHO_LINE_OA",
             }),
           ],
         );
@@ -1214,10 +1219,12 @@ async function handleDriverSession(event, lineUserId, session, actors) {
 async function handleWasteAction(params, lineUserId, actors, audience) {
   const action = String(params.waste || "");
   const allowed = audience === "DRIVER"
-    ? action === "menu" || action.startsWith("driver_")
+    ? action.startsWith("driver_")
     : action === "menu" || action === "register" || action.startsWith("citizen_");
   if (!allowed) return wasteMenu(actors, audience);
-  if (params.waste === "menu") return wasteMenu(actors, audience);
+  if (params.waste === "menu" || params.waste === "citizen_menu" || params.waste === "driver_menu") {
+    return wasteMenu(actors, audience);
+  }
   if (params.waste === "register") return beginRegistration(lineUserId);
   if (params.waste === "citizen_schedule") return citizenSchedule(actors.citizen);
   if (params.waste === "citizen_location") return citizenLocation(actors.citizen);
@@ -1485,12 +1492,15 @@ async function handleWasteAction(params, lineUserId, actors, audience) {
 }
 
 export function isExplicitWasteCommand(event, audience = "CITIZEN") {
-  if (event?.type === "postback") return Boolean(parsePostback(event.postback?.data).waste);
+  if (event?.type === "postback") {
+    const action = String(parsePostback(event.postback?.data).waste || "");
+    if (audience === "DRIVER") return action.startsWith("driver_");
+    return action === "menu" || action === "register" || action.startsWith("citizen_");
+  }
   if (event?.type !== "message" || event.message?.type !== "text") return false;
   const text = normalizeWasteCommand(event.message.text, audience);
   if (audience === "DRIVER") {
     return [
-      "เมนู",
       "เมนูพนักงานประจำรถขยะ",
       "งานเก็บขยะของฉัน",
       "งานวันนี้",
@@ -1498,7 +1508,6 @@ export function isExplicitWasteCommand(event, audience = "CITIZEN") {
       "ยืนยันตัวตนพนักงานประจำรถขยะ",
       "เริ่มยืนยันตัวตนใหม่",
       "วิธีใช้งานพนักงาน",
-      "ยกเลิกบริการขยะ",
     ].includes(text);
   }
   return ["เมนูขยะ", "บริการขยะ", "รถขยะ", "เก็บขยะ", "ลงทะเบียนบริการเก็บขยะ", "ตารางกำหนดการ", "ตำแหน่งรถขยะ", "ค่าบริการเก็บขยะ", "ยกเลิกบริการขยะ"].includes(text);

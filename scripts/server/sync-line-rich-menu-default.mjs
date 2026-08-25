@@ -12,26 +12,26 @@ try {
     force: true,
   });
 
-  const citizen =
+  const smartChannel =
     await lineChannelSettings.get(
-      "CITIZEN",
+      "SMART",
     );
 
-  if (!citizen.configured) {
+  if (!smartChannel.configured) {
     console.log(
-      "[line-rich-menu-default] CITIZEN: skipped (not configured or disabled)",
+      "[line-rich-menu-default] SMART: skipped (not configured or disabled)",
     );
   } else {
     const result =
       await syncSmartThaPhoDefaultRichMenu();
 
     console.log(
-      `[line-rich-menu-default] CITIZEN: Smart Tha Pho default (${result.richMenuId})`,
+      `[line-rich-menu-default] SMART: Smart Tha Pho default (${result.richMenuId})`,
     );
   }
 } catch (error) {
   console.error(
-    `[line-rich-menu-default] CITIZEN: failed: ${String(error?.message || error)}`,
+    `[line-rich-menu-default] SMART: failed: ${String(error?.message || error)}`,
   );
   process.exitCode = 1;
 } finally {

@@ -25,12 +25,15 @@ export class WasteLineShortcutCatalog {
           this.postback("ค่าบริการ", "waste=citizen_charges", "ตรวจสอบค่าบริการเก็บขยะ"),
         ]
       : [this.postback("ลงทะเบียนบริการ", "waste=register", "ลงทะเบียนบริการเก็บขยะ")];
+    actions.push(this.postback("งานพนักงาน", "waste=driver_menu", "เปิดเมนูพนักงานประจำรถขยะ"));
     actions.push(this.smartThaPhoHome());
     return this.normalize(actions);
   }
   driverGuest() {
     return this.normalize([
       this.postback("ยืนยันตัวตน", "waste=driver_link", "ยืนยันตัวตนพนักงานประจำรถขยะ"),
+      this.postback("บริการประชาชน", "waste=citizen_menu", "กลับเมนูบริการเก็บขยะสำหรับประชาชน"),
+      this.smartThaPhoHome(),
     ]);
   }
   driverIdentity() {
@@ -44,14 +47,14 @@ export class WasteLineShortcutCatalog {
       this.postback("ตารางกำหนดการ", "waste=citizen_schedule", "ตารางกำหนดการเก็บขยะประจำพื้นที่"),
       this.postback("ตำแหน่งรถ", "waste=citizen_location", "ดูตำแหน่งรถเก็บขยะ"),
       this.postback("ค่าบริการ", "waste=citizen_charges", "ตรวจสอบค่าบริการเก็บขยะ"),
-      this.postback("เมนูขยะ", "waste=menu", "กลับเมนูบริการเก็บขยะ"),
+      this.postback("เมนูขยะ", "waste=citizen_menu", "กลับเมนูบริการเก็บขยะ"),
       this.smartThaPhoHome(),
     ]);
   }
   unregistered() {
     return this.normalize([
       this.postback("ลงทะเบียน", "waste=register", "ลงทะเบียนบริการเก็บขยะ"),
-      this.postback("เมนูขยะ", "waste=menu", "กลับเมนูบริการเก็บขยะ"),
+      this.postback("เมนูขยะ", "waste=citizen_menu", "กลับเมนูบริการเก็บขยะ"),
       this.smartThaPhoHome(),
     ]);
   }
@@ -93,7 +96,9 @@ export class WasteLineShortcutCatalog {
       this.postback("งานวันนี้", "waste=driver_jobs_today", "ดูงานเก็บขยะวันนี้"),
       this.postback("งานล่วงหน้า", "waste=driver_jobs_upcoming", "ดูงานเก็บขยะล่วงหน้า"),
       this.postback("วิธีใช้งาน", "waste=driver_help", "วิธีใช้งานระบบพนักงานประจำรถขยะ"),
-      this.postback("เมนูพนักงาน", "waste=menu", "กลับเมนูพนักงานประจำรถขยะ"),
+      this.postback("เมนูพนักงาน", "waste=driver_menu", "กลับเมนูพนักงานประจำรถขยะ"),
+      this.postback("บริการประชาชน", "waste=citizen_menu", "กลับเมนูบริการเก็บขยะสำหรับประชาชน"),
+      this.smartThaPhoHome(),
     ]);
   }
   driverCancelFlow(extra = []) { return this.normalize([...extra, this.message("ยกเลิก", "ยกเลิกบริการขยะ"), ...this.driverMenu()]); }

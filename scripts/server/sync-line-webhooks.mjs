@@ -18,7 +18,7 @@ try {
 try {
   await lineChannelSettings.refresh({ force: true });
 
-  for (const kind of ["CITIZEN", "DRIVER"]) {
+  for (const kind of ["SMART"]) {
     const channel = await lineChannelSettings.get(kind);
     if (!channel.configured) {
       console.log(`[line-webhook-sync] ${kind}: skipped (not configured or disabled)`);

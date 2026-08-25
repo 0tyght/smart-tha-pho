@@ -2,14 +2,14 @@
 
 ## ช่องทาง LINE
 
-ระบบใช้ LINE Official Account สองบัญชีแยกกัน แต่เชื่อม API และฐานข้อมูล Smart Tha Pho ชุดเดียวกัน
+ระบบใช้ LINE Official Account `Smart Tha Pho` เพียงบัญชีเดียวสำหรับทุกบริการ ระบบแยกเมนูและสิทธิ์จากบทบาทที่ยืนยันไว้ในฐานข้อมูล
 
 | ผู้ใช้ | Webhook | เมนู |
 |---|---|---|
 | ประชาชน | `/api/line/webhook` | ลงทะเบียนผู้ใช้บริการเก็บขยะ ตรวจวันเก็บขยะ ติดตามรถ ตรวจค่าบริการ และแจ้งเหตุ |
-| พนักงานประจำรถขยะ | `/api/line/driver-webhook` | เชื่อมบัญชี ดูงานวันนี้ เริ่มงาน ส่งตำแหน่ง แจ้งเหตุ และจบงาน |
+| พนักงานประจำรถขยะ | `/api/line/webhook` | ยืนยันตัวตน ดูงานวันนี้ เริ่มงาน ส่งตำแหน่ง แจ้งเหตุ และจบงาน |
 
-ต้องสร้าง Messaging API Channel ของพนักงานประจำรถขยะแยกจากบัญชีประชาชน แล้วกำหนด `LINE_DRIVER_CHANNEL_SECRET`, `LINE_DRIVER_CHANNEL_ACCESS_TOKEN` และ `LINE_DRIVER_CHANNEL_ID` ใน `.env`
+กำหนด `LINE_CHANNEL_SECRET`, `LINE_CHANNEL_ACCESS_TOKEN` และ `LINE_CHANNEL_ID` ของ Smart Tha Pho เพียงชุดเดียว
 
 ## การผูกบ้านกับเส้นทาง
 

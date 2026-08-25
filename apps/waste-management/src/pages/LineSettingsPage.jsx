@@ -4,15 +4,10 @@ import { createWasteApplication } from "../composition-root/createWasteApplicati
 import { ErrorNotice, LoadingState, PageHead } from "../components/ui.jsx";
 
 const LABELS = Object.freeze({
-  CITIZEN: {
-    title: "LINE OA สำหรับประชาชน",
-    detail: "ใช้สำหรับบริการประชาชน การลงทะเบียน การแจ้งเตือน และบริการเก็บขยะของประชาชน",
-    accent: "ประชาชน",
-  },
-  DRIVER: {
-    title: "LINE OA สำหรับพนักงานประจำรถขยะ",
-    detail: "ใช้สำหรับยืนยันตัวตน งานที่ได้รับมอบหมาย การยืนยันจุดเก็บ และการแจ้งเหตุของพนักงาน",
-    accent: "พนักงาน",
+  SMART: {
+    title: "LINE Official Account · Smart Tha Pho",
+    detail: "บัญชีหลักสำหรับทะเบียนสัตว์เลี้ยง รถเก็บขยะ บรรเทาสาธารณภัย และการประปา ระบบจะแสดงเมนูตามสิทธิ์ของประชาชนหรือพนักงานโดยอัตโนมัติ",
+    accent: "บัญชีหลัก",
   },
 });
 
@@ -35,7 +30,7 @@ function formatTestedAt(value) {
 }
 
 function ChannelCard({ channel, draft, onChange, onTest, onSave, onWebhook, busy, feedback }) {
-  const labels = LABELS[channel.kind] || LABELS.CITIZEN;
+  const labels = LABELS[channel.kind] || LABELS.SMART;
   const [showSecret, setShowSecret] = useState(false);
   const [showToken, setShowToken] = useState(false);
   const statusClass = channel.enabled && channel.configured
@@ -231,12 +226,12 @@ export default function LineSettingsPage({ token }) {
       <PageHead
         eyebrow="SYSTEM SETTINGS"
         title="การเชื่อมต่อ LINE Official Account"
-        detail="จัดการ LINE OA สำหรับประชาชนและพนักงานแยกกัน โดยไม่ต้องแก้ source code หรือเปิดไฟล์ .env ทุกครั้งที่เปลี่ยนบัญชี"
+        detail="จัดการ LINE OA บัญชี Smart Tha Pho เพียงบัญชีเดียวสำหรับทุกระบบ โดยไม่ต้องแก้ source code หรือเปิดไฟล์ .env เมื่อเปลี่ยนการตั้งค่า"
       />
 
       <section className="waste-line-security-note" aria-label="ข้อควรทราบด้านความปลอดภัย">
         <strong>ข้อมูลลับไม่ถูกแสดงย้อนหลัง</strong>
-        <p>Channel Secret และ Access Token จะถูกเข้ารหัสก่อนเก็บในฐานข้อมูล หน้าเว็บจะแสดงเพียงว่ามีการตั้งค่าแล้ว หากต้องการเปลี่ยนให้กรอกค่าใหม่เท่านั้น</p>
+        <p>ประชาชนและพนักงานใช้งาน Smart Tha Pho OA เดียวกัน ระบบแยกสิทธิ์จากทะเบียนผู้ใช้ภายใน Channel Secret และ Access Token จะถูกเข้ารหัสก่อนเก็บในฐานข้อมูล</p>
       </section>
 
       {error ? <ErrorNotice error={error} onRetry={() => void load()} /> : null}

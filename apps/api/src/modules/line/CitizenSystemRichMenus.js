@@ -102,6 +102,74 @@ export function buildWasteCitizenRichMenuDefinition() {
         ),
       },
       {
+        label: "งานพนักงานประจำรถขยะ",
+        action: postback(
+          "งานพนักงานประจำรถขยะ",
+          "waste=driver_menu",
+          "เปิดเมนูพนักงานประจำรถขยะ",
+        ),
+      },
+      {
+        label: "Smart Tha Pho",
+        action: postback(
+          "Smart Tha Pho",
+          "smart=menu",
+          "กลับเมนูหลัก Smart Tha Pho",
+        ),
+      },
+    ],
+  };
+}
+
+export function buildWasteDriverRichMenuDefinition() {
+  return {
+    key: "smart-tha-pho-waste-driver-v1",
+    title: "งานพนักงานประจำรถขยะ",
+    subtitle: "Smart Tha Pho · สำหรับผู้ปฏิบัติงานที่ยืนยันตัวตนแล้ว",
+    cacheScope: "static",
+    isMain: true,
+    choices: [
+      {
+        label: "งานของฉัน",
+        action: postback(
+          "งานของฉัน",
+          "waste=driver_jobs",
+          "ดูแผนปฏิบัติงานเก็บขยะที่ได้รับมอบหมาย",
+        ),
+      },
+      {
+        label: "งานวันนี้",
+        action: postback(
+          "งานวันนี้",
+          "waste=driver_jobs_today",
+          "ดูงานเก็บขยะวันนี้",
+        ),
+      },
+      {
+        label: "งานล่วงหน้า",
+        action: postback(
+          "งานล่วงหน้า",
+          "waste=driver_jobs_upcoming",
+          "ดูงานเก็บขยะล่วงหน้า",
+        ),
+      },
+      {
+        label: "ยืนยันตัวตน",
+        action: postback(
+          "ยืนยันตัวตน",
+          "waste=driver_link",
+          "ยืนยันตัวตนพนักงานประจำรถขยะ",
+        ),
+      },
+      {
+        label: "บริการประชาชน",
+        action: postback(
+          "บริการประชาชน",
+          "waste=citizen_menu",
+          "กลับเมนูบริการเก็บขยะสำหรับประชาชน",
+        ),
+      },
+      {
         label: "Smart Tha Pho",
         action: postback(
           "Smart Tha Pho",
@@ -129,6 +197,24 @@ export function showWasteCitizenRichMenu(
     lineUserId,
     buildWasteCitizenRichMenuDefinition(),
   );
+}
+
+export function showWasteDriverRichMenu(
+  lineUserId,
+) {
+  return showStandaloneRichMenuForLineUser(
+    lineUserId,
+    buildWasteDriverRichMenuDefinition(),
+  );
+}
+
+export function showWasteRichMenuForAudience(
+  lineUserId,
+  audience = "CITIZEN",
+) {
+  return String(audience).toUpperCase() === "DRIVER"
+    ? showWasteDriverRichMenu(lineUserId)
+    : showWasteCitizenRichMenu(lineUserId);
 }
 
 export function syncSmartThaPhoDefaultRichMenu() {

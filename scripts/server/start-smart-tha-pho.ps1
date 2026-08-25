@@ -124,7 +124,7 @@ if (Test-Path -LiteralPath $lineWebhookSync) {
 
 $lineRichMenuDefaultSync = Join-Path $ProjectPath "scripts\server\sync-line-rich-menu-default.mjs"
 if (Test-Path -LiteralPath $lineRichMenuDefaultSync) {
-    Write-Host "ซิงก์ Default Rich Menu ของ Citizen OA เป็น Smart Tha Pho..." -ForegroundColor Cyan
+    Write-Host "ซิงก์ Default Rich Menu ของ Smart Tha Pho OA..." -ForegroundColor Cyan
     try {
         & node $lineRichMenuDefaultSync
         if ($LASTEXITCODE -ne 0) {
@@ -141,5 +141,4 @@ Write-Host "Smart Tha Pho พร้อมใช้งาน" -ForegroundColor Gr
 Write-Host "Web: $portalUrl" -ForegroundColor Green
 Write-Host "API: $apiBaseUrl" -ForegroundColor Green
 Write-Host "LINE OA: จัดการจากเมนู ตั้งค่า LINE OA ในระบบเว็บ" -ForegroundColor Green
-Write-Host "Citizen webhook: /api/line/webhook" -ForegroundColor Green
-Write-Host "Driver webhook: /api/line/driver-webhook" -ForegroundColor Green
+Write-Host "Unified LINE webhook: /api/line/webhook" -ForegroundColor Green

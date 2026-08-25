@@ -1,6 +1,6 @@
 import crypto from "node:crypto";
 import { lineChannelSettings } from "../../line/lineChannelSettings.js";
-import { showWasteCitizenRichMenu } from "../../line/CitizenSystemRichMenus.js";
+import { showWasteRichMenuForAudience } from "../../line/CitizenSystemRichMenus.js";
 import {
   lineCardBubble,
   lineCardButton,
@@ -17,7 +17,11 @@ const THEMES = Object.freeze({
   PLAN_ASSIGNMENT: { kicker: "งานเก็บขยะ", title: "ได้รับมอบหมายงาน", status: "รอปฏิบัติงาน", accent: "#315E86", action: ["ดูงานของฉัน", "waste=driver_jobs", "ดูแผนปฏิบัติงานเก็บขยะที่ได้รับมอบหมาย"] },
 });
 
-export function lineChannelKindForWasteNotification(notificationType) {
+export function lineChannelKindForWasteNotification() {
+  return "SMART";
+}
+
+export function lineAudienceForWasteNotification(notificationType) {
   return String(notificationType || "").toUpperCase() === "PLAN_ASSIGNMENT"
     ? "DRIVER"
     : "CITIZEN";
@@ -74,6 +78,7 @@ export class WasteLineNotificationQueue {
     );
     if (!row) return { status: "NOT_FOUND" };
     const channelKind = lineChannelKindForWasteNotification(row.notificationType);
+    const audience = lineAudienceForWasteNotification(row.notificationType);
     const channel = this.accessTokenOverride
       ? null
       : await this.channelSettings.get(channelKind);
@@ -83,12 +88,10 @@ export class WasteLineNotificationQueue {
       return { status: "FAILED" };
     }
 
-    if (
-      channelKind === "CITIZEN" &&
-      !this.accessTokenOverride
-    ) {
-      await showWasteCitizenRichMenu(
+    if (!this.accessTokenOverride) {
+      await showWasteRichMenuForAudience(
         row.lineUserId,
+        audience,
       ).catch((error) => {
         console.error(
           "[waste-line-notification] waste Rich Menu sync failed",

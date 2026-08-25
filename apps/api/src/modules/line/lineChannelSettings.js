@@ -3,7 +3,8 @@ import crypto from "node:crypto";
 import { LineChannelProfile } from "../../application/line/LineChannelProfile.js";
 import { config } from "../../core/config.js";
 
-const CHANNEL_KINDS = new Set(["CITIZEN", "DRIVER"]);
+const CHANNEL_KINDS = new Set(["SMART", "CITIZEN", "DRIVER"]);
+const PRIMARY_CHANNEL_KIND = "SMART";
 const CACHE_TTL_MS = 15_000;
 const LINE_API_BASE = "https://api.line.me";
 const CIPHER_VERSION = "v1";
@@ -14,19 +15,16 @@ function normalizeKind(value) {
   return kind;
 }
 
+function primaryKindFor(value) {
+  normalizeKind(value);
+  return PRIMARY_CHANNEL_KIND;
+}
+
 function trimText(value) {
   return String(value ?? "").trim();
 }
 
-function defaultsFor(kind) {
-  if (kind === "DRIVER") {
-    return {
-      channelSecret: config.lineDriverChannelSecret,
-      channelAccessToken: config.lineDriverChannelAccessToken,
-      channelId: config.lineDriverChannelId,
-    };
-  }
-
+function defaultsFor() {
   return {
     channelSecret: config.lineChannelSecret,
     channelAccessToken: config.lineChannelAccessToken,
@@ -34,8 +32,9 @@ function defaultsFor(kind) {
   };
 }
 
-function webhookPathFor(kind) {
-  return kind === "DRIVER" ? "/api/line/driver-webhook" : "/api/line/webhook";
+function webhookPathFor(kindValue) {
+  normalizeKind(kindValue);
+  return "/api/line/webhook";
 }
 
 function makeCipherKey() {
@@ -97,7 +96,7 @@ export class LineChannelSettingsRegistry {
   }
 
   envEntry(kindValue) {
-    const kind = normalizeKind(kindValue);
+    const kind = primaryKindFor(kindValue);
     const fallback = defaultsFor(kind);
     return {
       kind,
@@ -122,8 +121,7 @@ export class LineChannelSettingsRegistry {
 
     this.refreshPromise = (async () => {
       const next = new Map([
-        ["CITIZEN", this.envEntry("CITIZEN")],
-        ["DRIVER", this.envEntry("DRIVER")],
+        [PRIMARY_CHANNEL_KIND, this.envEntry(PRIMARY_CHANNEL_KIND)],
       ]);
 
       try {
@@ -144,6 +142,7 @@ export class LineChannelSettingsRegistry {
 
         for (const row of rows) {
           const kind = normalizeKind(row.kind);
+          if (kind !== PRIMARY_CHANNEL_KIND) continue;
           next.set(kind, {
             kind,
             source: "DATABASE",
@@ -176,7 +175,7 @@ export class LineChannelSettingsRegistry {
   }
 
   getCached(kindValue) {
-    const kind = normalizeKind(kindValue);
+    const kind = primaryKindFor(kindValue);
     const entry = this.cache.get(kind) || this.envEntry(kind);
     return this.profileFromEntry(entry);
   }
@@ -192,7 +191,7 @@ export class LineChannelSettingsRegistry {
   }
 
   async get(kindValue) {
-    const kind = normalizeKind(kindValue);
+    const kind = primaryKindFor(kindValue);
     await this.refresh();
     return this.profileFromEntry(this.cache.get(kind) || this.envEntry(kind));
   }
@@ -219,13 +218,13 @@ export class LineChannelSettingsRegistry {
 
   async listSafe() {
     await this.refresh();
-    return ["CITIZEN", "DRIVER"].map((kind) =>
+    return [PRIMARY_CHANNEL_KIND].map((kind) =>
       this.safeEntry(this.cache.get(kind) || this.envEntry(kind)),
     );
   }
 
   async test(kindValue, overrides = {}) {
-    const kind = normalizeKind(kindValue);
+    const kind = primaryKindFor(kindValue);
     await this.refresh();
     const current = this.cache.get(kind) || this.envEntry(kind);
     const candidate = {
@@ -273,7 +272,7 @@ export class LineChannelSettingsRegistry {
   }
 
   async save(kindValue, input, actor = {}) {
-    const kind = normalizeKind(kindValue);
+    const kind = primaryKindFor(kindValue);
     await this.refresh({ force: true });
     const current = this.cache.get(kind) || this.envEntry(kind);
     const enabled = input.enabled !== false;
@@ -352,7 +351,7 @@ export class LineChannelSettingsRegistry {
   }
 
   async configureWebhook(kindValue, baseUrl, actor = {}) {
-    const kind = normalizeKind(kindValue);
+    const kind = primaryKindFor(kindValue);
     const channel = await this.get(kind);
     const token = channel.requireAccessToken();
     const normalizedBase = trimText(baseUrl).replace(/\/+$/, "");

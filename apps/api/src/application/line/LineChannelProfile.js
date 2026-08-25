@@ -1,4 +1,4 @@
-const CHANNEL_KINDS = new Set(["CITIZEN", "DRIVER"]);
+const CHANNEL_KINDS = new Set(["SMART", "CITIZEN", "DRIVER"]);
 
 export class LineChannelProfile {
   constructor({ kind, channelSecret, channelAccessToken, channelId = null }) {
@@ -16,16 +16,14 @@ export class LineChannelProfile {
 
   requireSecret() {
     if (!this.channelSecret) {
-      const key = this.kind === "DRIVER" ? "LINE_DRIVER_CHANNEL_SECRET" : "LINE_CHANNEL_SECRET";
-      throw new Error(`ยังไม่ได้ตั้งค่า ${key}`);
+      throw new Error("ยังไม่ได้ตั้งค่า LINE_CHANNEL_SECRET");
     }
     return this.channelSecret;
   }
 
   requireAccessToken() {
     if (!this.channelAccessToken) {
-      const key = this.kind === "DRIVER" ? "LINE_DRIVER_CHANNEL_ACCESS_TOKEN" : "LINE_CHANNEL_ACCESS_TOKEN";
-      throw new Error(`ยังไม่ได้ตั้งค่า ${key}`);
+      throw new Error("ยังไม่ได้ตั้งค่า LINE_CHANNEL_ACCESS_TOKEN");
     }
     return this.channelAccessToken;
   }

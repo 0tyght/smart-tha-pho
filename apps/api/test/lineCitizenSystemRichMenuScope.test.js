@@ -162,7 +162,7 @@ test(
 );
 
 test(
-  "LINE switches persistent menus by citizen system context",
+  "LINE switches persistent menus by system context and resolved waste audience",
   () => {
     assert.match(
       lineBot,
@@ -171,12 +171,12 @@ test(
 
     assert.match(
       lineBot,
-      /smartMenuRequest\.system === "waste"[\s\S]*?showWasteCitizenRichMenu/,
+      /smartMenuRequest\.system === "waste"[\s\S]*?resolveWasteAudienceForLineUser[\s\S]*?showWasteRichMenuForAudience/,
     );
 
     assert.match(
       lineBot,
-      /if \(wasteResult\.handled\)[\s\S]*?showWasteCitizenRichMenu/,
+      /if \(wasteResult\.handled\)[\s\S]*?showWasteRichMenuForAudience/,
     );
 
     assert.doesNotMatch(
@@ -187,11 +187,11 @@ test(
 );
 
 test(
-  "waste push binds the waste citizen menu rather than unlinking to channel default",
+  "waste push binds the waste menu for its internal audience",
   () => {
     assert.match(
       wasteQueue,
-      /showWasteCitizenRichMenu/,
+      /showWasteRichMenuForAudience/,
     );
 
     assert.doesNotMatch(
@@ -202,7 +202,7 @@ test(
 );
 
 test(
-  "startup synchronizes Smart Tha Pho as Citizen OA default Rich Menu",
+  "startup synchronizes Smart Tha Pho OA default Rich Menu",
   () => {
     assert.match(
       launcher,

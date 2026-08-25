@@ -206,15 +206,15 @@ test("generic waste card does not duplicate a multi-line title in body", () => {
   );
 });
 
-test("staff guest exposes only identity action before verification", () => {
+test("staff guest can verify identity or return to shared OA menus", () => {
   const actions = catalog.driverGuest();
   assert.deepEqual(
     actions.map((action) => action.data),
-    ["waste=driver_link"],
+    ["waste=driver_link", "waste=citizen_menu", "smart=menu"],
   );
 });
 
-test("driver edge states have distinct replies and global DRIVER recovery uses Flex card", () => {
+test("driver edge states have distinct replies and audience recovery uses Flex card", () => {
   const line = fs.readFileSync(
     new URL("../src/modules/line/wasteLine.js", import.meta.url),
     "utf8",
@@ -246,7 +246,7 @@ test("driver edge states have distinct replies and global DRIVER recovery uses F
 
   assert.match(bot, /buildWasteLineTextCard/);
   assert.match(bot, /const recoveryMessage/);
-  assert.match(bot, /channel\.kind === "DRIVER"/);
+  assert.match(bot, /wasteAudience === "DRIVER"/);
 });
 test("driver work is visible only after publication", async () => {
   const source = fs.readFileSync(

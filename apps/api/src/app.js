@@ -94,7 +94,7 @@ const staffCreateSchema = z.object({
   villageId: z.coerce.number().int().positive().nullable().optional().default(null),
 });
 
-const lineChannelKindSchema = z.enum(["CITIZEN", "DRIVER"]);
+const lineChannelKindSchema = z.enum(["SMART"]);
 const lineChannelSettingsSchema = z.object({
   channelId: z.string().trim().max(80).optional().default(""),
   channelSecret: z.string().trim().max(500).optional().default(""),
@@ -985,8 +985,7 @@ export class SmartThaPhoApiApplication {
 
   create() {
   const { lineNotifications, nativeCitizen, citizenSubmissionApproval, lineBot, reportExports, mfa, wasteHttpModule } = this.services;
-  const handleCitizenLineWebhook = (req, res) => lineBot.handleCitizenWebhook(req, res);
-  const handleDriverLineWebhook = (req, res) => lineBot.handleDriverWebhook(req, res);
+  const handleLineWebhook = (req, res) => lineBot.handleWebhook(req, res);
   const deliverLineNotification = (id) => lineNotifications.deliver(id);
   const enqueueLineNotification = (database, notification) => lineNotifications.enqueue(database, notification);
   const shouldSendRealtimeStatusNotification = (status) => lineNotifications.shouldSendRealtimeStatus(status);
@@ -1030,15 +1029,7 @@ export class SmartThaPhoApiApplication {
       type: "application/json",
       limit: "1mb",
     }),
-    handleCitizenLineWebhook,
-  );
-  app.post(
-    ["/api/line/driver-webhook", "/api/v1/line/driver-webhook"],
-    express.raw({
-      type: "application/json",
-      limit: "1mb",
-    }),
-    handleDriverLineWebhook,
+    handleLineWebhook,
   );
   app.use(express.json({ limit: "15mb" }));
 

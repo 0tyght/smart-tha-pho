@@ -3,16 +3,14 @@ import test from "node:test";
 
 import { LineChannelProfile } from "../src/application/line/LineChannelProfile.js";
 
-test("represents citizen and driver LINE credentials independently", () => {
-  const citizen = new LineChannelProfile({ kind: "CITIZEN", channelSecret: "citizen-secret", channelAccessToken: "citizen-token" });
-  const driver = new LineChannelProfile({ kind: "DRIVER", channelSecret: "driver-secret", channelAccessToken: "driver-token" });
-  assert.equal(citizen.configured, true);
-  assert.equal(driver.configured, true);
-  assert.notEqual(citizen.channelAccessToken, driver.channelAccessToken);
+test("represents the shared Smart Tha Pho LINE credentials", () => {
+  const smart = new LineChannelProfile({ kind: "SMART", channelSecret: "smart-secret", channelAccessToken: "smart-token" });
+  assert.equal(smart.configured, true);
+  assert.equal(smart.channelAccessToken, "smart-token");
 });
 
-test("reports the correct environment key for an unconfigured driver channel", () => {
+test("legacy audience aliases report the shared Smart Tha Pho environment keys", () => {
   const driver = new LineChannelProfile({ kind: "DRIVER" });
-  assert.throws(() => driver.requireSecret(), /LINE_DRIVER_CHANNEL_SECRET/);
-  assert.throws(() => driver.requireAccessToken(), /LINE_DRIVER_CHANNEL_ACCESS_TOKEN/);
+  assert.throws(() => driver.requireSecret(), /LINE_CHANNEL_SECRET/);
+  assert.throws(() => driver.requireAccessToken(), /LINE_CHANNEL_ACCESS_TOKEN/);
 });

@@ -136,7 +136,7 @@ test(
 );
 
 test(
-  "Smart home and citizen waste actions bind the correct persistent system menu",
+  "Smart home and waste actions bind the persistent menu for the resolved audience",
   () => {
     assert.match(
       lineBot,
@@ -145,12 +145,12 @@ test(
 
     assert.match(
       lineBot,
-      /smartMenuRequest\.system === "waste"[\s\S]*?showWasteCitizenRichMenu/,
+      /smartMenuRequest\.system === "waste"[\s\S]*?resolveWasteAudienceForLineUser[\s\S]*?showWasteRichMenuForAudience/,
     );
 
     assert.match(
       lineBot,
-      /if\s*\(wasteResult\.handled\)[\s\S]*?showWasteCitizenRichMenu/,
+      /if\s*\(wasteResult\.handled\)[\s\S]*?showWasteRichMenuForAudience/,
     );
 
     assert.doesNotMatch(
@@ -161,22 +161,22 @@ test(
 );
 
 test(
-  "citizen waste push binds waste Rich Menu before the waste notification",
+  "waste push binds the audience Rich Menu before the notification",
   () => {
     assert.match(
       wasteNotificationQueue,
-      /channelKind === "CITIZEN"[\s\S]*?showWasteCitizenRichMenu[\s\S]*?"WASTE_PUSH"/,
+      /const audience = lineAudienceForWasteNotification[\s\S]*?showWasteRichMenuForAudience[\s\S]*?"WASTE_PUSH"/,
     );
 
-    const citizenBlock =
+    const audienceBlock =
       wasteNotificationQueue.indexOf(
-        'channelKind === "CITIZEN"',
+        "const audience = lineAudienceForWasteNotification",
       );
 
     const menuIndex =
       wasteNotificationQueue.indexOf(
-        "showWasteCitizenRichMenu",
-        citizenBlock,
+        "showWasteRichMenuForAudience",
+        audienceBlock,
       );
 
     const pushIndex =
@@ -185,11 +185,11 @@ test(
       );
 
     assert.ok(
-      citizenBlock >= 0,
+      audienceBlock >= 0,
     );
 
     assert.ok(
-      menuIndex > citizenBlock,
+      menuIndex > audienceBlock,
     );
 
     assert.ok(

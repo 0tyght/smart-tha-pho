@@ -15,7 +15,8 @@ test("recognizes explicit waste service commands without intercepting pet messag
 
 test("recognizes waste postbacks and parses identifiers", () => {
   const event = { type: "postback", postback: { data: "waste=driver_start&planId=abc" } };
-  assert.equal(isExplicitWasteCommand(event), true);
+  assert.equal(isExplicitWasteCommand(event, "DRIVER"), true);
+  assert.equal(isExplicitWasteCommand(event, "CITIZEN"), false);
   assert.deepEqual(parseWastePostback(event.postback.data), { waste: "driver_start", planId: "abc" });
 });
 

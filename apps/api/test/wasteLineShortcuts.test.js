@@ -38,20 +38,20 @@ test("covers every citizen waste menu with visible postback shortcuts", () => {
   assertValidActions(actions);
   assert.deepEqual(
     actions.filter((action) => action.type === "postback").map((action) => action.data),
-    ["waste=citizen_schedule", "waste=citizen_location", "waste=citizen_charges", "smart=menu"],
+    ["waste=citizen_schedule", "waste=citizen_location", "waste=citizen_charges", "waste=driver_menu", "smart=menu"],
   );
 });
 
-test("keeps driver shortcuts separate from citizen and Smart Tha Pho menus", () => {
+test("one OA lets users switch between driver citizen and Smart Tha Pho menus", () => {
   assert.deepEqual(
     catalog.driverGuest().map((action) => action.data),
-    ["waste=driver_link"],
+    ["waste=driver_link", "waste=citizen_menu", "smart=menu"],
   );
   assert.deepEqual(
     catalog.driverMenu().map((action) => action.data),
-    ["waste=driver_jobs", "waste=driver_jobs_today", "waste=driver_jobs_upcoming", "waste=driver_help", "waste=menu"],
+    ["waste=driver_jobs", "waste=driver_jobs_today", "waste=driver_jobs_upcoming", "waste=driver_help", "waste=driver_menu", "waste=citizen_menu", "smart=menu"],
   );
-  assert.ok(catalog.menu({ citizen: { id: "citizen-1" } }).every((action) => !String(action.data).includes("driver_")));
+  assert.ok(catalog.menu({ citizen: { id: "citizen-1" } }).some((action) => action.data === "waste=driver_menu"));
 });
 
 test("covers every registration step with cancel plus contextual shortcuts", () => {
@@ -70,7 +70,7 @@ test("covers active driver work without exceeding LINE limits", () => {
   const actions = catalog.activePlan(plan);
   assertValidActions(actions);
   const commands = actions.filter((action) => action.type === "postback").map((action) => action.data);
-  for (const command of ["driver_gps", "driver_location", "driver_stops", "driver_incident", "driver_complete", "driver_jobs", "menu"]) {
+  for (const command of ["driver_gps", "driver_location", "driver_stops", "driver_incident", "driver_complete", "driver_jobs", "driver_menu"]) {
     assert.ok(commands.some((value) => value.includes(`waste=${command}`)), `missing ${command}`);
   }
   assertValidActions(catalog.incidentTypes(plan));
@@ -100,7 +100,7 @@ test("renders up to eight driver plans as swipeable LINE cards with one unambigu
   assert.match(JSON.stringify(message.contents), /WST-20260813-001/);
   assert.match(JSON.stringify(message.contents), /WST-20260820-001/);
   assertValidActions(actionsOf(message));
-  assert.equal(actionsOf(message).length, 5);
+  assert.equal(actionsOf(message).length, 7);
   assert.equal(cardActionsOf(message).filter((action) => String(action.data || "").includes("waste=driver_plan")).length, 8);
 });
 
