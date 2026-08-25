@@ -241,7 +241,7 @@ function LatestCitizenData({ items, navigate }) {
         <div>
           <span><Icon name="line" /> ช่องทางประชาชน</span>
           <h2>ข้อมูลล่าสุดจาก LINE Official Account</h2>
-          <p>เปิดดูรายการเพื่อรับตรวจ แก้ไขข้อมูล หรือรับรองเข้าทะเบียน</p>
+          <p>เปิดดูรายการเพื่อตรวจสอบและรับรองเข้าสู่ทะเบียนทางการ</p>
         </div>
         <button type="button" onClick={() => navigate("registrations")}>เปิดศูนย์รับข้อมูล</button>
       </header>
