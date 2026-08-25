@@ -83,7 +83,7 @@ $apiBaseUrl = $apiBaseUrl.TrimEnd("/")
 $webhookUrl = "$apiBaseUrl/line/webhook"
 $portalUrl = [string]$config.portalUrl
 if ([string]::IsNullOrWhiteSpace($portalUrl)) {
-    $portalUrl = "https://0tyght.github.io/PRMS-TSM/"
+    $portalUrl = "https://0tyght.github.io/smart-tha-pho/"
 }
 
 $healthReady = $false

@@ -140,7 +140,7 @@ export const config = Object.freeze({
 
   wasteDriverTrackingUrl: readText(
     process.env.WASTE_DRIVER_TRACKING_URL,
-    "https://0tyght.github.io/PRMS-TSM/waste-management/",
+    "https://0tyght.github.io/smart-tha-pho/waste-management/",
   ),
 
   lineRichMenuGuestId: readText(process.env.LINE_RICH_MENU_GUEST_ID),
