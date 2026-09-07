@@ -5,7 +5,7 @@ import { ApiClient } from "../src/api.js";
 
 const publicLocation = Object.freeze({ hostname: "0tyght.github.io" });
 
-test("RuntimeConfigRepository prefers the API URL embedded during deployment", async () => {
+test("RuntimeConfigRepository falls back to the bundled API when runtime config is unavailable", async () => {
   let fetchCount = 0;
   const repository = new RuntimeConfigRepository({
     buildTimeApiBase: "https://tunnel.example.com/api/",
@@ -18,12 +18,12 @@ test("RuntimeConfigRepository prefers the API URL embedded during deployment", a
   });
 
   assert.equal(await repository.getApiBase(), "https://tunnel.example.com/api");
-  assert.equal(fetchCount, 0);
+  assert.equal(fetchCount, 1);
 });
 
-test("RuntimeConfigRepository falls back to the deployed runtime file", async () => {
+test("RuntimeConfigRepository prefers fresh runtime config over a stale bundled URL", async () => {
   const repository = new RuntimeConfigRepository({
-    buildTimeApiBase: "",
+    buildTimeApiBase: "https://stale.example.com/api",
     locationObject: publicLocation,
     sources: [() => "https://example.com/runtime-config.json"],
     fetchImplementation: async () => ({

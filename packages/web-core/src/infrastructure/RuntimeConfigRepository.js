@@ -1,6 +1,6 @@
 const DEFAULT_CONFIG_SOURCES = Object.freeze([
+  () => `https://raw.githubusercontent.com/0tyght/smart-tha-pho/main/runtime-config.json?t=${Date.now()}`,
   () => new URL("runtime-config.json", `${location.origin}${import.meta.env.BASE_URL}`).href,
-  () => "https://raw.githubusercontent.com/0tyght/PRMS-TSM/main/runtime-config.json",
 ]);
 
 const DEFAULT_BUILD_TIME_API_BASE = import.meta.env?.VITE_API_BASE_URL || "";
@@ -35,7 +35,7 @@ export class RuntimeConfigRepository {
     const hostname = String(this.locationObject.hostname || "").toLowerCase();
     if (
       ["localhost", "127.0.0.1"].includes(hostname) ||
-      hostname.endsWith(".ngrok-free.dev")
+      hostname.endsWith(".ngrok-free.dev") || hostname.endsWith(".trycloudflare.com")
     ) return "/api";
     if (forceRefresh) this.pending = undefined;
     if (!this.pending) this.pending = this.#load();
@@ -44,7 +44,6 @@ export class RuntimeConfigRepository {
 
   async #load() {
     const bundledApiBase = this.normalizeApiBase(this.buildTimeApiBase);
-    if (bundledApiBase) return bundledApiBase;
 
     for (const source of this.sources) {
       try {
@@ -57,6 +56,6 @@ export class RuntimeConfigRepository {
         // Continue with the next configured source.
       }
     }
-    return "";
+    return bundledApiBase;
   }
 }
