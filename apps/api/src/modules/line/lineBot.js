@@ -14,7 +14,7 @@ import {
   decorateNativeCitizenResultWithRichMenu,
   handleWizardControl,
 } from "./lineRichMenuWizard.js";
-import { smartThaPhoLineMenu } from "./SmartThaPhoLineMenu.js";
+import { smartThaPhoLineMenu } from "../../composition-root/smartThaPhoLineMenuContainer.js";
 import {
   showSmartThaPhoMainRichMenu,
   showWasteRichMenuForAudience,

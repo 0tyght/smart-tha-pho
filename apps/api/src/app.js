@@ -8,7 +8,6 @@ import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import { z } from "zod";
 import {
-  ORGANIZATION,
   REGISTRATION_STATUS,
   validatePetRegistration,
 } from "@smart-thapho/shared";
@@ -984,7 +983,7 @@ export class SmartThaPhoApiApplication {
   }
 
   create() {
-  const { lineNotifications, nativeCitizen, citizenSubmissionApproval, lineBot, reportExports, mfa, wasteHttpModule } = this.services;
+  const { lineNotifications, nativeCitizen, citizenSubmissionApproval, lineBot, reportExports, mfa, wasteHttpModule, healthHttpModule, publicReferenceHttpModule } = this.services;
   const handleLineWebhook = (req, res) => lineBot.handleWebhook(req, res);
   const deliverLineNotification = (id) => lineNotifications.deliver(id);
   const enqueueLineNotification = (database, notification) => lineNotifications.enqueue(database, notification);
@@ -1114,88 +1113,9 @@ export class SmartThaPhoApiApplication {
     },
   );
 
-  app.get("/api/health/live", (_req, res) => {
-    res.json({
-      status: "alive",
-      uptimeSeconds: Math.floor(process.uptime()),
-      timestamp: new Date().toISOString(),
-    });
-  });
+  app.use("/api/health", healthHttpModule.getRouter());
 
-  app.get("/api/health/ready", async (_req, res) => {
-    try {
-      const [rows] = await pool.query(
-        `SELECT
-           (SELECT COUNT(*) FROM information_schema.tables
-            WHERE table_schema = DATABASE()
-              AND table_name IN ('users','owners','pets','registrations','citizen_submissions','notifications','audit_logs','idempotency_keys')) AS present,
-           EXISTS(SELECT 1 FROM information_schema.columns
-                  WHERE table_schema = DATABASE() AND table_name = 'attachments' AND column_name = 'checksum_sha256') AS secureAttachments,
-           (EXISTS(SELECT 1 FROM information_schema.columns
-                   WHERE table_schema = DATABASE() AND table_name = 'owners' AND column_name = 'national_id_hash')
-            AND NOT EXISTS(SELECT 1 FROM information_schema.columns
-                           WHERE table_schema = DATABASE() AND table_name = 'owners' AND column_name = 'national_id')) AS tokenizedNationalId`,
-      );
-      const presentTables = Number(rows[0]?.present || 0);
-      const secureAttachments = Boolean(Number(rows[0]?.secureAttachments || 0));
-      const tokenizedNationalId = Boolean(Number(rows[0]?.tokenizedNationalId || 0));
-      const ready = presentTables === 8 && secureAttachments && tokenizedNationalId;
-      return res.status(ready ? 200 : 503).json({
-        status: ready ? "ready" : "not_ready",
-        requiredTables: 8,
-        presentTables,
-        secureAttachments,
-        tokenizedNationalId,
-        timestamp: new Date().toISOString(),
-      });
-    } catch {
-      return res.status(503).json({
-        status: "not_ready",
-        database: "unavailable",
-        timestamp: new Date().toISOString(),
-      });
-    }
-  });
-
-  app.get("/api/health", async (_req, res) => {
-    let database = "unavailable";
-
-    try {
-      await pool.query("SELECT 1");
-      database = "ready";
-    } catch {
-      // Health endpoint remains reachable so callers can see DB state.
-    }
-
-    res.json({
-      service: "Smart Tha Pho API",
-      version: "1.0.0",
-      organization: ORGANIZATION.shortName,
-      status: "ok",
-      database,
-      timestamp: new Date().toISOString(),
-    });
-  });
-
-  app.get("/api/public/villages", async (_req, res, next) => {
-    try {
-      const [rows] = await pool.query(
-        `
-          SELECT
-            id,
-            village_no AS villageNo,
-            name_th AS name
-          FROM villages
-          WHERE is_active = 1
-          ORDER BY village_no
-        `,
-      );
-
-      res.json({ data: rows });
-    } catch (error) {
-      next(error);
-    }
-  });
+  app.use("/api/public", publicReferenceHttpModule.getRouter());
 
   app.post("/api/public/registrations", publicSubmissionRateLimit, async (req, res, next) => {
     let attachment = null;

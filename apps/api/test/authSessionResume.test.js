@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 import jwt from "jsonwebtoken";
-import { verifyAuthenticatedToken } from "../src/presentation/http/AuthMiddleware.js";
+import { JwtSessionTokenService } from "../src/infrastructure/security/JwtSessionTokenService.js";
 
 const SECRET = "test-secret-for-session-resume";
 
@@ -22,22 +22,37 @@ function signExpiredToken({ staffSession, issuedHoursAgo = 1 }) {
   );
 }
 
-test("expired staff token remains usable during the same workday", () => {
-  const token = signExpiredToken({ staffSession: true, issuedHoursAgo: 1 });
-  const payload = verifyAuthenticatedToken(token, SECRET);
+test("valid staff token is accepted", () => {
+  const token = jwt.sign(
+    { sub: "staff-1", role: "OFFICER", staffSession: true },
+    SECRET,
+    { expiresIn: "12h" },
+  );
+  const tokenService = new JwtSessionTokenService({ jwtSecret: SECRET });
+
+  const payload = tokenService.verify(token);
 
   assert.equal(payload.sub, "staff-1");
   assert.equal(payload.staffSession, true);
 });
 
+test("expired staff token is rejected", () => {
+  const token = signExpiredToken({ staffSession: true, issuedHoursAgo: 1 });
+  const tokenService = new JwtSessionTokenService({ jwtSecret: SECRET });
+
+  assert.throws(() => tokenService.verify(token));
+});
+
 test("expired non-staff token is rejected", () => {
   const token = signExpiredToken({ staffSession: false, issuedHoursAgo: 1 });
+  const tokenService = new JwtSessionTokenService({ jwtSecret: SECRET });
 
-  assert.throws(() => verifyAuthenticatedToken(token, SECRET));
+  assert.throws(() => tokenService.verify(token));
 });
 
 test("staff token older than the maximum workday session is rejected", () => {
   const token = signExpiredToken({ staffSession: true, issuedHoursAgo: 13 });
+  const tokenService = new JwtSessionTokenService({ jwtSecret: SECRET });
 
-  assert.throws(() => verifyAuthenticatedToken(token, SECRET));
+  assert.throws(() => tokenService.verify(token));
 });

@@ -2,9 +2,6 @@ import { lazy, Suspense, useEffect, useMemo } from "react";
 import AdminLayout from "./components/layout/AdminLayout.jsx";
 import PageErrorBoundary from "./components/layout/PageErrorBoundary.jsx";
 import { useHashPage } from "./hooks/useHashPage.js";
-import { PrmsApplicationController } from "./application/PrmsApplicationController.js";
-
-const applicationController = new PrmsApplicationController();
 
 const DashboardPage = lazy(() => import("./pages/DashboardPage.jsx"));
 const OwnersPage = lazy(() => import("./pages/OwnersPage.jsx"));
@@ -19,7 +16,10 @@ function PageLoading() {
   return <section className="panel page-loading" aria-live="polite" aria-busy="true"><i aria-hidden="true">◌</i><h1>กำลังเปิดข้อมูลทะเบียนสัตว์เลี้ยง</h1><p>กรุณารอสักครู่</p></section>;
 }
 
-export default function PrmsApp() {
+export default function PrmsApp({ applicationController }) {
+  if (!applicationController) {
+    throw new TypeError("PrmsApp requires applicationController");
+  }
   const { page: requestedPage, navigate } = useHashPage();
   const viewModel = useMemo(() => applicationController.createViewModel(requestedPage), [requestedPage]);
   const { token, user, page, title } = viewModel;

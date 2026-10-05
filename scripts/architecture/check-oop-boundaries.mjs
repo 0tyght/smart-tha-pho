@@ -6,6 +6,13 @@ const SOURCE_ROOTS = ["apps", "packages"];
 const SOURCE_EXTENSIONS = new Set([".js", ".jsx", ".mjs"]);
 const IMPORT_PATTERN = /(?:import\s+(?:[^"']+?\s+from\s+)?|export\s+[^"']+?\s+from\s+|import\s*\()\s*["']([^"']+)["']/g;
 const violations = [];
+const LEGACY_LINE_DATABASE_ALLOWLIST = new Set([
+  "apps/api/src/modules/line/lineChannelSettings.js",
+  "apps/api/src/modules/line/lineNativeCitizen.v10.js",
+  "apps/api/src/modules/line/lineNotifications.js",
+  "apps/api/src/modules/line/lineRichMenuWizard.js",
+  "apps/api/src/modules/line/wasteLine.js",
+]);
 
 function collectFiles(directory, files = []) {
   if (!fs.existsSync(directory)) return files;
@@ -52,23 +59,58 @@ function checkApplication(file, dependencies) {
   }
 }
 
-function checkPresentation(file, dependencies) {
+function checkPresentation(file, dependencies, source) {
   const directInfrastructure = /^@smart-thapho\/web-core\/(api|session|navigation|runtime-config)$/;
+  const serverInfrastructure = /^(mysql2)(\/|$)|(^|\/)(infrastructure|core\/db)(\/|$)/;
   for (const dependency of dependencies) {
     if (directInfrastructure.test(dependency)) {
       addViolation(file, dependency, "Presentation must call an application service through the composition root");
     }
+    if (serverInfrastructure.test(dependency.replaceAll("\\", "/"))) {
+      addViolation(file, dependency, "Presentation must not import database or infrastructure adapters");
+    }
+  }
+
+  if (/\b(?:pool|database|db)\.(?:execute|query|beginTransaction|commit|rollback)\s*\(/.test(source)) {
+    addViolation(
+      file,
+      "direct database call",
+      "Presentation must delegate persistence to an application use case and repository",
+    );
+  }
+}
+
+function checkLineModule(file, dependencies, source) {
+  const relative = normalizedRelative(file);
+  const importsDatabase = dependencies.some((dependency) =>
+    /(^|\/)core\/db(?:\.js)?$/.test(dependency.replaceAll("\\", "/")),
+  );
+  const callsDatabase = /\b(?:pool|database|db)\.(?:execute|query|transaction)\s*\(/.test(source);
+
+  if (
+    (importsDatabase || callsDatabase) &&
+    !LEGACY_LINE_DATABASE_ALLOWLIST.has(relative)
+  ) {
+    addViolation(
+      file,
+      "direct database access",
+      "New LINE modules must use an application service and repository; only audited legacy modules are temporarily allowed",
+    );
   }
 }
 
 for (const sourceRoot of SOURCE_ROOTS) {
   for (const file of collectFiles(path.join(ROOT, sourceRoot))) {
     const relative = normalizedRelative(file);
-    const dependencies = importsOf(fs.readFileSync(file, "utf8"));
+    const source = fs.readFileSync(file, "utf8");
+    const dependencies = importsOf(source);
     if (relative.includes("/domain/")) checkDomain(file, dependencies);
     if (relative.includes("/application/")) checkApplication(file, dependencies);
     if (/\/(pages|components|presentation)\//.test(relative) || /\/src\/(?:[A-Z][^/]*App|App)\.jsx$/.test(relative)) {
-      checkPresentation(file, dependencies);
+      checkPresentation(file, dependencies, source);
+    }
+    if (relative.includes("/modules/line/")) {
+      checkLineModule(file, dependencies, source);
     }
   }
 }

@@ -9,6 +9,13 @@ import { database } from "../core/db.js";
 import { config } from "../core/config.js";
 import { createWasteManagementServices } from "./createWasteManagementServices.js";
 import { WasteHttpModule } from "../modules/waste/waste.router.js";
+import { HealthStatusService } from "../application/health/HealthStatusService.js";
+import { MariaDbHealthRepository } from "../infrastructure/health/MariaDbHealthRepository.js";
+import { HealthHttpModule } from "../presentation/http/HealthHttpModule.js";
+import { ORGANIZATION } from "@smart-thapho/shared";
+import { ListActiveVillagesUseCase } from "../application/reference/ListActiveVillagesUseCase.js";
+import { MariaDbVillageRepository } from "../infrastructure/reference/MariaDbVillageRepository.js";
+import { PublicReferenceHttpModule } from "../presentation/http/PublicReferenceHttpModule.js";
 
 export function createHttpApplicationServices() {
   const nativeCitizen =
@@ -24,6 +31,30 @@ export function createHttpApplicationServices() {
     new WasteHttpModule({
       services:
         wasteManagement,
+    });
+
+  const healthHttpModule =
+    new HealthHttpModule({
+      healthStatusService:
+        new HealthStatusService({
+          healthRepository:
+            new MariaDbHealthRepository({
+              database,
+            }),
+          organizationName:
+            ORGANIZATION.shortName,
+          uptime:
+            () => process.uptime(),
+        }),
+    });
+
+  const publicReferenceHttpModule =
+    new PublicReferenceHttpModule({
+      listActiveVillagesUseCase:
+        new ListActiveVillagesUseCase({
+          villageRepository:
+            new MariaDbVillageRepository({ database }),
+        }),
     });
 
   return Object.freeze({
@@ -49,6 +80,8 @@ export function createHttpApplicationServices() {
 
     wasteManagement,
     wasteHttpModule,
+    healthHttpModule,
+    publicReferenceHttpModule,
   });
 }
 

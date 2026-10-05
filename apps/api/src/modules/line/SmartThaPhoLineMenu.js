@@ -1,5 +1,3 @@
-import { pool } from "../../core/db.js";
-
 const SYSTEMS = Object.freeze([
   { key: "pet", label: "ทะเบียนสัตว์เลี้ยง", displayText: "เปิดระบบทะเบียนสัตว์เลี้ยง" },
   { key: "waste", label: "รถเก็บขยะ", displayText: "เปิดระบบบริหารจัดการการเก็บขยะ" },
@@ -8,6 +6,13 @@ const SYSTEMS = Object.freeze([
 ]);
 
 export class SmartThaPhoLineMenu {
+  constructor({ clearLineConversationUseCase }) {
+    if (!clearLineConversationUseCase) {
+      throw new TypeError("SmartThaPhoLineMenu requires clearLineConversationUseCase");
+    }
+    this.clearLineConversationUseCase = clearLineConversationUseCase;
+  }
+
   normalizeText(value) {
     return String(value || "").trim().replace(/\s+/g, " ").toLowerCase();
   }
@@ -78,12 +83,6 @@ export class SmartThaPhoLineMenu {
   }
 
   async clearPendingFlows(lineUserId) {
-    if (!lineUserId) return;
-    await Promise.all([
-      pool.execute("DELETE FROM line_conversation_sessions WHERE line_user_id = ?", [lineUserId]),
-      pool.execute("DELETE FROM waste_line_sessions WHERE line_user_id = ?", [lineUserId]),
-    ]);
+    return this.clearLineConversationUseCase.execute({ lineUserId });
   }
 }
-
-export const smartThaPhoLineMenu = new SmartThaPhoLineMenu();

@@ -2,6 +2,7 @@ import React from "react";
 import { createRoot } from "react-dom/client";
 import App from "./PrmsApp.jsx";
 import RootErrorBoundary from "./components/layout/RootErrorBoundary.jsx";
+import { createPrmsApplicationController } from "./composition-root/createPrmsApplicationController.js";
 import "./styles.css";
 import "./ux-foundation-v7.css";
 import "./admin-sections-v8.css";
@@ -53,10 +54,12 @@ const root = createRoot(rootElement, {
   },
 });
 
+const applicationController = createPrmsApplicationController();
+
 root.render(
   <React.StrictMode>
     <RootErrorBoundary>
-      <App />
+      <App applicationController={applicationController} />
     </RootErrorBoundary>
   </React.StrictMode>,
 );

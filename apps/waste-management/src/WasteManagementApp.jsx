@@ -1,19 +1,19 @@
-import { useEffect, useMemo } from "react";
+import { lazy, Suspense, useEffect, useMemo } from "react";
 import WasteLayout from "./components/WasteLayout.jsx";
-import DashboardPage from "./pages/DashboardPage.jsx";
-import PlansPage from "./pages/PlansPage.jsx";
-import ResourcesPage from "./pages/ResourcesPage.jsx";
-import TrackingPage from "./pages/TrackingPage.jsx";
-import ServiceUsersPage from "./pages/ServiceUsersPage.jsx";
-import BillingPage from "./pages/BillingPage.jsx";
-import IncidentsPage from "./pages/IncidentsPage.jsx";
-import ReportsPage from "./pages/ReportsPage.jsx";
-import DriverTrackingPage from "./pages/DriverTrackingPage.jsx";
-import LineSettingsPage from "./pages/LineSettingsPage.jsx";
 import { useHashPage } from "./lib/useHashPage.js";
-import { WasteApplicationController } from "./application/WasteApplicationController.js";
 import "./waste.css";
 import "./route-assignment.css";
+
+const DashboardPage = lazy(() => import("./pages/DashboardPage.jsx"));
+const PlansPage = lazy(() => import("./pages/PlansPage.jsx"));
+const ResourcesPage = lazy(() => import("./pages/ResourcesPage.jsx"));
+const TrackingPage = lazy(() => import("./pages/TrackingPage.jsx"));
+const ServiceUsersPage = lazy(() => import("./pages/ServiceUsersPage.jsx"));
+const BillingPage = lazy(() => import("./pages/BillingPage.jsx"));
+const IncidentsPage = lazy(() => import("./pages/IncidentsPage.jsx"));
+const ReportsPage = lazy(() => import("./pages/ReportsPage.jsx"));
+const DriverTrackingPage = lazy(() => import("./pages/DriverTrackingPage.jsx"));
+const LineSettingsPage = lazy(() => import("./pages/LineSettingsPage.jsx"));
 
 const PAGES = Object.freeze({
   dashboard: DashboardPage,
@@ -27,9 +27,16 @@ const PAGES = Object.freeze({
   "line-settings": LineSettingsPage,
 });
 
-const applicationController = new WasteApplicationController({ pageIds: Object.keys(PAGES) });
+export const WASTE_PAGE_IDS = Object.freeze(Object.keys(PAGES));
 
-export default function WasteManagementApp() {
+function PageLoading() {
+  return <main className="waste-auth-check" aria-live="polite" aria-busy="true">กำลังเปิดข้อมูลระบบจัดการเก็บขยะ</main>;
+}
+
+export default function WasteManagementApp({ applicationController }) {
+  if (!applicationController) {
+    throw new TypeError("WasteManagementApp requires applicationController");
+  }
   const { page: requestedPage, query, navigate } = useHashPage();
   const isDriverTracking = requestedPage === "driver-gps";
   const viewModel = useMemo(() => applicationController.createViewModel(requestedPage), [requestedPage]);
@@ -42,8 +49,8 @@ export default function WasteManagementApp() {
     return applicationController.subscribeToExpiration(() => applicationController.logout());
   }, []);
   useEffect(() => { if (!isDriverTracking && requestedPage !== permittedPage) navigate(permittedPage); }, [isDriverTracking, navigate, permittedPage, requestedPage]);
-  if (isDriverTracking) return <DriverTrackingPage trackingToken={query.get("token") || ""} />;
+  if (isDriverTracking) return <Suspense fallback={<PageLoading />}><DriverTrackingPage trackingToken={query.get("token") || ""} /></Suspense>;
   if (!token) return <main className="waste-auth-check">กำลังตรวจสอบสิทธิ์เข้าใช้งาน</main>;
 
-  return <WasteLayout page={page} navigate={navigate} user={user} onSwitchSystem={() => applicationController.switchSystem()} onLogout={() => applicationController.logout()}><Page token={token} navigate={navigate} planId={query.get("plan")} /></WasteLayout>;
+  return <WasteLayout page={page} navigate={navigate} user={user} onSwitchSystem={() => applicationController.switchSystem()} onLogout={() => applicationController.logout()}><Suspense fallback={<PageLoading />}><Page token={token} navigate={navigate} planId={query.get("plan")} /></Suspense></WasteLayout>;
 }

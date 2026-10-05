@@ -3,7 +3,11 @@ import test from "node:test";
 
 import { SmartThaPhoLineMenu } from "../src/modules/line/SmartThaPhoLineMenu.js";
 
-const menu = new SmartThaPhoLineMenu();
+const menu = new SmartThaPhoLineMenu({
+  clearLineConversationUseCase: {
+    execute: async () => ({ cleared: true }),
+  },
+});
 
 test("starts LINE at the Smart Tha Pho four-system selector", () => {
   const message = menu.message();

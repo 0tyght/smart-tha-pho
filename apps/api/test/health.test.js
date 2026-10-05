@@ -1,9 +1,14 @@
-import test from "node:test";
+import test, { after } from "node:test";
 import assert from "node:assert/strict";
 import jwt from "jsonwebtoken";
 import { prepareRegistrationAttachment } from "../src/app.js";
 import { createApp } from "../src/composition-root/createHttpApplication.js";
 import { config } from "../src/core/config.js";
+import { database } from "../src/core/db.js";
+
+after(async () => {
+  await database.end();
+});
 
 test("creates the API application", () => {
   const app = createApp();
@@ -19,15 +24,21 @@ test("serves the versioned API contract without breaking the legacy path", async
   t.after(() => new Promise((resolve) => server.close(resolve)));
 
   const port = server.address().port;
-  const [versioned, legacy] = await Promise.all([
+  const [versioned, legacy, health, readiness] = await Promise.all([
     fetch(`http://127.0.0.1:${port}/api/v1/health/live`),
     fetch(`http://127.0.0.1:${port}/api/health/live`),
+    fetch(`http://127.0.0.1:${port}/api/v1/health`),
+    fetch(`http://127.0.0.1:${port}/api/health/ready`),
   ]);
 
   assert.equal(versioned.status, 200);
   assert.equal(legacy.status, 200);
   assert.equal((await versioned.json()).status, "alive");
   assert.equal((await legacy.json()).status, "alive");
+  assert.equal(health.status, 200);
+  assert.equal((await health.json()).service, "Smart Tha Pho API");
+  assert.equal([200, 503].includes(readiness.status), true);
+  assert.match((await readiness.json()).status, /^(ready|not_ready)$/);
 });
 
 test("allows municipal frontends to consume API responses across origins", async (t) => {
