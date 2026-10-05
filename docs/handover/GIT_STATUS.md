@@ -1,60 +1,40 @@
-# สถานะ Git และเวอร์ชันที่ใช้ตรวจเอกสาร
+# เวอร์ชันและผลตรวจชุดส่งมอบ
 
 [กลับคู่มือหลัก](README.md)
 
-ตรวจวันที่ 5 ตุลาคม 2569 เวลาอ้างอิง Asia/Bangkok โดยอ่าน remote ล่าสุดลงพื้นที่ตรวจสอบแยก ไม่ได้ fetch/merge/pull เข้า working tree ของผู้ใช้งาน และไม่ได้ commit/push
+ตรวจวันที่ 5 ตุลาคม 2569 เวลาอ้างอิง Asia/Bangkok โค้ดที่ใช้ตรวจรวมงานในเครื่องกับ GitHub แล้ว คู่มือชุดนี้จัดเก็บใน repository เดียวกับโค้ด ผู้รับช่วงงานจึงตรวจเวอร์ชันย้อนหลังได้จากประวัติ Git
 
-## ผลตรวจ
+## เวอร์ชันโค้ดที่ตรวจ
 
 | รายการ | ผล |
 | --- | --- |
 | Repository | https://github.com/0tyght/smart-tha-pho |
-| Branch ในเครื่อง | main |
-| HEAD ในเครื่อง | `0704c587ff32c9aa5587992ec00c04024cc6d7e7` |
-| main บน GitHub ณ เวลาตรวจ | `b2c5c8bf70d52df09fdfe58bfc58deb56886b25c` |
-| Commit เฉพาะในเครื่อง | 1 |
-| Commit เฉพาะบน remote | 5 |
-| ไฟล์ tracked ที่แก้ค้าง | 17 |
-| ไฟล์ใหม่ที่ยังไม่ tracked ไม่รวมคู่มือชุดนี้ | 25 |
-| SQL ใน database/ | 37 ไฟล์ตรงกับ remote ทั้งหมด เมื่อเทียบ Git blob ตาม line-ending/filter ของ repository |
-| ฐานข้อมูลจริง/สำรองข้อมูล | ยังไม่ได้ตรวจหรือ export ในรอบนี้ |
+| Branch | `main` |
+| Commit เก็บงานที่ค้างและคู่มือฉบับแรก | `40314d2` |
+| Commit จาก GitHub ที่นำมารวม | `b2c5c8bf70d52df09fdfe58bfc58deb56886b25c` |
+| Commit หลังรวมงานที่ใช้ทดสอบและ build | `96b0785ced8b17b260238f1ca1492dfc5e30c3fb` |
+| การแก้ conflict | ใช้ผังประปา CSS และ runtime configuration ฉบับล่าสุดจาก GitHub เก็บงานเดิมไว้ใน commit `40314d2` |
+| SQL ใน `database/` | 37 ไฟล์ ตรวจ Git blob ตรงกับ commit GitHub ที่นำมารวมทุกไฟล์ |
+| ฐานข้อมูลจริง | ไม่ได้ตรวจข้อมูล ไม่ได้ export dump และไม่ได้เปลี่ยน schema production |
 
-จึงยังระบุไม่ได้ว่า “โค้ดทั้งหมดขึ้น Git เป็นล่าสุดแล้ว” คู่มือนี้อธิบาย working tree ที่มีงานค้าง ซึ่งผู้รับมอบ clone remote อย่างเดียวจะไม่ได้ไฟล์ใหม่ทั้งหมดที่กล่าวถึง จำนวนไฟล์ข้างต้นไม่นับคู่มือส่งมอบชุดนี้อีก 8 ไฟล์ซึ่งจัดทำใหม่และยังไม่ได้ commit
+Commit ที่ปรับคำอธิบายและหลักฐานชุดส่งมอบต่อจาก `96b0785` ไม่เปลี่ยนโค้ดแอปพลิเคชันที่ใช้ทดสอบ ดู SHA ล่าสุดของชุดส่งมอบด้วย `git log -1` และเทียบกับ `git ls-remote origin refs/heads/main` หลังอัป ไม่ใส่ SHA ของเอกสารฉบับนี้ลงในตัวเองเพราะ SHA จะเปลี่ยนทุกครั้งที่แก้เนื้อหา
 
-## Commit ที่ต่างกัน
+## ผลตรวจหลังรวมงาน
 
-`<` คืออยู่เฉพาะในเครื่อง และ `>` คืออยู่เฉพาะ remote:
+| การตรวจ | ผล |
+| --- | --- |
+| `npm test` | ผ่าน 286 รายการ: API 244, shared 6, web-core 13, pets 4, waste 16 และ waterworks 3 |
+| `architecture:check` | ผ่านเงื่อนไข import และกฎในสคริปต์ ไม่ใช่การรับรองว่าโค้ดเก่าทุกส่วนแยกตาม OOP ครบแล้ว |
+| `npm run build` | ผ่านทั้ง 5 เว็บ: portal สุนัขและแมว ขยะ สาธารณภัย และประปา |
+| `git diff --check` | ผ่านก่อน commit งานและการรวม conflict |
+| Runtime ที่ตรวจในเครื่อง | Node.js 24.18.0; CI ใช้ Node.js 22 ซึ่งต้องดูผล workflow แยก |
+| การทดสอบที่ยังไม่ครอบคลุม | UAT, การกู้คืนข้อมูลจริง, อุปกรณ์ V-BOX/V-NET 2.0 และการทำงาน production ครบวงจร |
 
-```text
-> b2c5c8b 2026-09-21 chore: sync TYTC temporary public URL
-> 398c9e4 2026-09-17 fix(water): refine SCADA process overview
-> e0c762c 2026-09-17 feat(water): deploy interactive treatment monitoring
-< 0704c58 2026-09-17 feat(water): deploy interactive treatment monitoring
-> 02860a8 2026-09-07 chore: sync TYTC temporary public URL
-> 683f9fd 2026-09-07 fix: prefer current runtime API URL after tunnel rotation
-```
+รายละเอียด hash ไฟล์โค้ดและ SQL อยู่ใน [SOURCE_AUDIT.json](SOURCE_AUDIT.json) โดยแยกสถานะก่อนรวมงานไว้เป็นประวัติ ไม่ใช้จำนวนไฟล์ที่เคยแก้ค้างแทนสถานะปัจจุบัน
 
-เป็นประวัติที่แยกกัน ไม่ควรตัดสินจากชื่อ commit ว่าเป็นงานต่างกันทั้งหมดหรือเหมือนกันทั้งหมด มี commit ประปาชื่อเดียวกันแต่ SHA ต่างกัน ต้องตรวจ diff ก่อนรวมงาน
+## ขอบเขตการอัปและการรับช่วงงาน
 
-ไฟล์ที่ต่างระหว่างสอง commit tips (ไม่รวมการแก้ค้างใน working tree):
-
-```text
-apps/waterworks-management/src/presentation/components/WaterTreatmentProcessDiagram.jsx
-apps/waterworks-management/src/waterworks-dashboard.css
-packages/web-core/src/infrastructure/RuntimeConfigRepository.js
-packages/web-core/test/runtime-config.test.js
-runtime-config.json
-```
-
-รายละเอียดไฟล์แก้ค้างและ hash SQL อยู่ใน [SOURCE_AUDIT.json](SOURCE_AUDIT.json) ไม่มีค่าลับหรือข้อมูลประชาชนในไฟล์หลักฐานนี้
-
-## ก่อนกำหนด release ส่งมอบ
-
-1. สำรอง/เก็บงานที่ค้างโดยไม่ reset หรือลบทิ้ง แยก `.env` และ uploads ออกอย่างปลอดภัย
-2. ให้ผู้รับผิดชอบตรวจ diff ของ local/remote โดยเฉพาะผังประปา runtime config และ refactor API/UI ที่ยังไม่ commit
-3. รวมงานด้วยวิธีที่ทีมเลือกและทดสอบ ไม่ใช้ force push เพื่อข้ามความขัดแย้ง
-4. รัน architecture check, tests, build และตรวจ workflow ที่เกี่ยวข้อง
-5. Commit งานที่เลือก แล้ว push เมื่อได้รับอนุญาต จากนั้นเทียบ HEAD/remote ใหม่และกำหนด tag ส่งมอบ
-6. ปรับหลักฐานและคู่มือให้ผูกกับ release commit ที่ตกลง ไม่ใช้ snapshot นี้แทนผลตรวจหลัง merge
-
-เอกสารชุดนี้ไม่ได้ทำข้อ 1–6 แทนทีม ไม่ได้ push โค้ดหรือ SQL และไม่มี backup ข้อมูลจริงแนบ
+- อัปโค้ด คู่มือนักพัฒนา และไฟล์ SQL ที่ติดตามใน repository ไม่อัป `.env` ข้อมูลประชาชน uploads หรือ dump ฐานข้อมูลจริง
+- คู่มืออธิบายไฟล์รัน production ที่มีอยู่ แต่การตรวจรอบนี้ไม่ได้เรียก launcher ไม่ restart API และไม่ apply migration กับฐานข้อมูลจริง
+- การ push `main` เรียก workflow GitHub Pages ที่มีอยู่ ผล build/deploy บน GitHub ต้องตรวจแยกจากผลในเครื่อง
+- สาธารณภัยยังมีส่วนที่เป็นหน้าโครงงาน และประปายังใช้ข้อมูลตรวจวัดจำลอง รายละเอียดระบุในคู่มือรายระบบ ไม่ถือว่าส่งมอบทุกฟังก์ชันตามแบบเป้าหมายเสร็จแล้ว

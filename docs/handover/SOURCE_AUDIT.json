@@ -1,183 +1,10 @@
 {
   "checkedAt": "2026-10-05 Asia/Bangkok",
   "repository": "https://github.com/0tyght/smart-tha-pho",
-  "localHead": "0704c587ff32c9aa5587992ec00c04024cc6d7e7",
-  "remoteMain": "b2c5c8bf70d52df09fdfe58bfc58deb56886b25c",
-  "localOnlyCommits": 1,
-  "remoteOnlyCommits": 5,
-  "modifiedTrackedFileCount": 17,
-  "untrackedFileCountExcludingNewHandoverDocuments": 25,
-  "workingTreeChangesExcludingHandoverDocuments": [
-    {
-      "status": " M",
-      "path": "apps/api/src/app.js"
-    },
-    {
-      "status": " M",
-      "path": "apps/api/src/composition-root/createHttpApplication.js"
-    },
-    {
-      "status": " M",
-      "path": "apps/api/src/core/middleware.js"
-    },
-    {
-      "status": " M",
-      "path": "apps/api/src/modules/line/SmartThaPhoLineMenu.js"
-    },
-    {
-      "status": " M",
-      "path": "apps/api/src/modules/line/citizenExperience.js"
-    },
-    {
-      "status": " M",
-      "path": "apps/api/src/modules/line/lineBot.js"
-    },
-    {
-      "status": " M",
-      "path": "apps/api/src/presentation/http/AuthMiddleware.js"
-    },
-    {
-      "status": " M",
-      "path": "apps/api/test/authSessionResume.test.js"
-    },
-    {
-      "status": " M",
-      "path": "apps/api/test/health.test.js"
-    },
-    {
-      "status": " M",
-      "path": "apps/api/test/smartThaPhoLineMenu.test.js"
-    },
-    {
-      "status": " M",
-      "path": "apps/prms-tsm/src/PrmsApp.jsx"
-    },
-    {
-      "status": " M",
-      "path": "apps/prms-tsm/src/main.jsx"
-    },
-    {
-      "status": " M",
-      "path": "apps/waste-management/src/App.jsx"
-    },
-    {
-      "status": " M",
-      "path": "apps/waste-management/src/WasteManagementApp.jsx"
-    },
-    {
-      "status": " M",
-      "path": "apps/waste-management/src/main.jsx"
-    },
-    {
-      "status": " M",
-      "path": "runtime-config.json"
-    },
-    {
-      "status": " M",
-      "path": "scripts/architecture/check-oop-boundaries.mjs"
-    },
-    {
-      "status": "??",
-      "path": "apps/api/src/application/health/HealthStatusService.js"
-    },
-    {
-      "status": "??",
-      "path": "apps/api/src/application/line/CitizenExperienceService.js"
-    },
-    {
-      "status": "??",
-      "path": "apps/api/src/application/line/ClearLineConversationUseCase.js"
-    },
-    {
-      "status": "??",
-      "path": "apps/api/src/application/reference/ListActiveVillagesUseCase.js"
-    },
-    {
-      "status": "??",
-      "path": "apps/api/src/application/security/AuthenticateRequestUseCase.js"
-    },
-    {
-      "status": "??",
-      "path": "apps/api/src/application/security/AuthenticationError.js"
-    },
-    {
-      "status": "??",
-      "path": "apps/api/src/composition-root/citizenExperienceContainer.js"
-    },
-    {
-      "status": "??",
-      "path": "apps/api/src/composition-root/smartThaPhoLineMenuContainer.js"
-    },
-    {
-      "status": "??",
-      "path": "apps/api/src/infrastructure/health/MariaDbHealthRepository.js"
-    },
-    {
-      "status": "??",
-      "path": "apps/api/src/infrastructure/line/MariaDbCitizenExperienceRepository.js"
-    },
-    {
-      "status": "??",
-      "path": "apps/api/src/infrastructure/line/MariaDbLineConversationRepository.js"
-    },
-    {
-      "status": "??",
-      "path": "apps/api/src/infrastructure/reference/MariaDbVillageRepository.js"
-    },
-    {
-      "status": "??",
-      "path": "apps/api/src/infrastructure/security/JwtSessionTokenService.js"
-    },
-    {
-      "status": "??",
-      "path": "apps/api/src/infrastructure/security/MariaDbStaffAccountRepository.js"
-    },
-    {
-      "status": "??",
-      "path": "apps/api/src/presentation/http/HealthHttpModule.js"
-    },
-    {
-      "status": "??",
-      "path": "apps/api/src/presentation/http/PublicReferenceHttpModule.js"
-    },
-    {
-      "status": "??",
-      "path": "apps/api/src/presentation/http/RoleAuthorizationMiddleware.js"
-    },
-    {
-      "status": "??",
-      "path": "apps/api/test/authenticationArchitecture.test.js"
-    },
-    {
-      "status": "??",
-      "path": "apps/api/test/citizenExperienceArchitecture.test.js"
-    },
-    {
-      "status": "??",
-      "path": "apps/api/test/healthArchitecture.test.js"
-    },
-    {
-      "status": "??",
-      "path": "apps/api/test/lineConversationArchitecture.test.js"
-    },
-    {
-      "status": "??",
-      "path": "apps/api/test/publicReferenceArchitecture.test.js"
-    },
-    {
-      "status": "??",
-      "path": "apps/prms-tsm/src/composition-root/createPrmsApplicationController.js"
-    },
-    {
-      "status": "??",
-      "path": "apps/waste-management/src/composition-root/createWasteApplicationController.js"
-    },
-    {
-      "status": "??",
-      "path": "docs/architecture/OOP_SYSTEM_AUDIT_2026-09-01.md"
-    }
-  ],
-  "databaseFilesMatchRemote": true,
+  "testedApplicationCommit": "96b0785ced8b17b260238f1ca1492dfc5e30c3fb",
+  "mergedRemoteCommit": "b2c5c8bf70d52df09fdfe58bfc58deb56886b25c",
+  "applicationWorkingTreeChangesAtCheck": [],
+  "databaseFilesMatchMergedRemote": true,
   "databaseFiles": [
     {
       "path": "database/bootstrap/create_database.sql",
@@ -365,13 +192,6 @@
       "sha256WorkingFile": "01f03a926d0f3d2e20508e1e8ea0007bfbc55d7abd79b1fd7cc0338b0a4deb16"
     }
   ],
-  "liveDatabaseInspected": false,
-  "databaseDumpExported": false,
-  "productionStarted": false,
-  "gitPushPerformed": false,
-  "architectureBoundaryCheck": "PASS",
-  "fullApplicationTestsRun": false,
-  "buildRun": false,
   "documentSourceFiles": [
     {
       "path": ".env.example",
@@ -581,5 +401,623 @@
       "path": "scripts/server/start-smart-tha-pho.ps1",
       "sha256": "e687e8c44bd111a3563f922d1b701379b3fb82737eed1d18ea6a8718d8e0f163"
     }
-  ]
+  ],
+  "liveDatabaseInspected": false,
+  "databaseDumpExported": false,
+  "productionStarted": false,
+  "architectureBoundaryCheck": "PASS",
+  "applicationTests": {
+    "result": "PASS",
+    "total": 286,
+    "byWorkspace": {
+      "api": 244,
+      "shared": 6,
+      "web-core": 13,
+      "pets": 4,
+      "waste": 16,
+      "waterworks": 3
+    }
+  },
+  "build": {
+    "result": "PASS",
+    "webApplications": [
+      "portal",
+      "prms-tsm",
+      "waste-management",
+      "disaster-management",
+      "waterworks-management"
+    ]
+  },
+  "localNodeVersion": "24.18.0",
+  "ciNodeMajorVersion": 22,
+  "notValidated": [
+    "production UAT",
+    "live database restore",
+    "physical V-BOX/V-NET 2.0 integration"
+  ],
+  "preIntegrationSnapshot": {
+    "checkedAt": "2026-10-05 Asia/Bangkok",
+    "repository": "https://github.com/0tyght/smart-tha-pho",
+    "localHead": "0704c587ff32c9aa5587992ec00c04024cc6d7e7",
+    "remoteMain": "b2c5c8bf70d52df09fdfe58bfc58deb56886b25c",
+    "localOnlyCommits": 1,
+    "remoteOnlyCommits": 5,
+    "modifiedTrackedFileCount": 17,
+    "untrackedFileCountExcludingNewHandoverDocuments": 25,
+    "workingTreeChangesExcludingHandoverDocuments": [
+      {
+        "status": " M",
+        "path": "apps/api/src/app.js"
+      },
+      {
+        "status": " M",
+        "path": "apps/api/src/composition-root/createHttpApplication.js"
+      },
+      {
+        "status": " M",
+        "path": "apps/api/src/core/middleware.js"
+      },
+      {
+        "status": " M",
+        "path": "apps/api/src/modules/line/SmartThaPhoLineMenu.js"
+      },
+      {
+        "status": " M",
+        "path": "apps/api/src/modules/line/citizenExperience.js"
+      },
+      {
+        "status": " M",
+        "path": "apps/api/src/modules/line/lineBot.js"
+      },
+      {
+        "status": " M",
+        "path": "apps/api/src/presentation/http/AuthMiddleware.js"
+      },
+      {
+        "status": " M",
+        "path": "apps/api/test/authSessionResume.test.js"
+      },
+      {
+        "status": " M",
+        "path": "apps/api/test/health.test.js"
+      },
+      {
+        "status": " M",
+        "path": "apps/api/test/smartThaPhoLineMenu.test.js"
+      },
+      {
+        "status": " M",
+        "path": "apps/prms-tsm/src/PrmsApp.jsx"
+      },
+      {
+        "status": " M",
+        "path": "apps/prms-tsm/src/main.jsx"
+      },
+      {
+        "status": " M",
+        "path": "apps/waste-management/src/App.jsx"
+      },
+      {
+        "status": " M",
+        "path": "apps/waste-management/src/WasteManagementApp.jsx"
+      },
+      {
+        "status": " M",
+        "path": "apps/waste-management/src/main.jsx"
+      },
+      {
+        "status": " M",
+        "path": "runtime-config.json"
+      },
+      {
+        "status": " M",
+        "path": "scripts/architecture/check-oop-boundaries.mjs"
+      },
+      {
+        "status": "??",
+        "path": "apps/api/src/application/health/HealthStatusService.js"
+      },
+      {
+        "status": "??",
+        "path": "apps/api/src/application/line/CitizenExperienceService.js"
+      },
+      {
+        "status": "??",
+        "path": "apps/api/src/application/line/ClearLineConversationUseCase.js"
+      },
+      {
+        "status": "??",
+        "path": "apps/api/src/application/reference/ListActiveVillagesUseCase.js"
+      },
+      {
+        "status": "??",
+        "path": "apps/api/src/application/security/AuthenticateRequestUseCase.js"
+      },
+      {
+        "status": "??",
+        "path": "apps/api/src/application/security/AuthenticationError.js"
+      },
+      {
+        "status": "??",
+        "path": "apps/api/src/composition-root/citizenExperienceContainer.js"
+      },
+      {
+        "status": "??",
+        "path": "apps/api/src/composition-root/smartThaPhoLineMenuContainer.js"
+      },
+      {
+        "status": "??",
+        "path": "apps/api/src/infrastructure/health/MariaDbHealthRepository.js"
+      },
+      {
+        "status": "??",
+        "path": "apps/api/src/infrastructure/line/MariaDbCitizenExperienceRepository.js"
+      },
+      {
+        "status": "??",
+        "path": "apps/api/src/infrastructure/line/MariaDbLineConversationRepository.js"
+      },
+      {
+        "status": "??",
+        "path": "apps/api/src/infrastructure/reference/MariaDbVillageRepository.js"
+      },
+      {
+        "status": "??",
+        "path": "apps/api/src/infrastructure/security/JwtSessionTokenService.js"
+      },
+      {
+        "status": "??",
+        "path": "apps/api/src/infrastructure/security/MariaDbStaffAccountRepository.js"
+      },
+      {
+        "status": "??",
+        "path": "apps/api/src/presentation/http/HealthHttpModule.js"
+      },
+      {
+        "status": "??",
+        "path": "apps/api/src/presentation/http/PublicReferenceHttpModule.js"
+      },
+      {
+        "status": "??",
+        "path": "apps/api/src/presentation/http/RoleAuthorizationMiddleware.js"
+      },
+      {
+        "status": "??",
+        "path": "apps/api/test/authenticationArchitecture.test.js"
+      },
+      {
+        "status": "??",
+        "path": "apps/api/test/citizenExperienceArchitecture.test.js"
+      },
+      {
+        "status": "??",
+        "path": "apps/api/test/healthArchitecture.test.js"
+      },
+      {
+        "status": "??",
+        "path": "apps/api/test/lineConversationArchitecture.test.js"
+      },
+      {
+        "status": "??",
+        "path": "apps/api/test/publicReferenceArchitecture.test.js"
+      },
+      {
+        "status": "??",
+        "path": "apps/prms-tsm/src/composition-root/createPrmsApplicationController.js"
+      },
+      {
+        "status": "??",
+        "path": "apps/waste-management/src/composition-root/createWasteApplicationController.js"
+      },
+      {
+        "status": "??",
+        "path": "docs/architecture/OOP_SYSTEM_AUDIT_2026-09-01.md"
+      }
+    ],
+    "databaseFilesMatchRemote": true,
+    "databaseFiles": [
+      {
+        "path": "database/bootstrap/create_database.sql",
+        "gitBlob": "ca5910e3617c22c1e3427ff99750f516fa713827",
+        "sha256WorkingFile": "6f5258093e9942a57d3f8b10c8e2ec2cb48a47dd2b500b01fd4fe7f594bb4953"
+      },
+      {
+        "path": "database/bootstrap/create_tables.sql",
+        "gitBlob": "35361c8adf079725b29960add0a267ff0ece3a91",
+        "sha256WorkingFile": "87e3354052b96e4a8098c691607437d95326c79e4035b14d02c89568c427fe03"
+      },
+      {
+        "path": "database/bootstrap/seed_data.sql",
+        "gitBlob": "643c01d67adb0954b3dff0e903ae487a6790574e",
+        "sha256WorkingFile": "e42eea30eaa50b149e2df5e178ceb0b2ea878a47e2031627f68a3df848053c47"
+      },
+      {
+        "path": "database/demo/pet_registry_demo_data.sql",
+        "gitBlob": "a446b27a39da1e41d0ff9bd149eaa207d9f47f81",
+        "sha256WorkingFile": "e4b4358dd26bcfe35a28a5b494839e6e23bc424a25ff7fc763e633a31b07e308"
+      },
+      {
+        "path": "database/demo/waste_demo_data.sql",
+        "gitBlob": "dbb0175c14894b0b74d02ee927218d494987a5f2",
+        "sha256WorkingFile": "b83f2c3628a909aa4aeb7f62e09268a3ef4b9171b6c2cd84938c58a3c00c1aa7"
+      },
+      {
+        "path": "database/demo/waste_tha_pho_route_geometry.sql",
+        "gitBlob": "7db4ceb12b4fced454d21fb096918829a782a511",
+        "sha256WorkingFile": "86b6708f89f55dbf7290ebc6c651adcefb60d27002bfcd66d3e0cf336be4bc1a"
+      },
+      {
+        "path": "database/demo/waste_tha_pho_routes.sql",
+        "gitBlob": "202acd1fc93e98ba0a0cf8888dd310236050b72e",
+        "sha256WorkingFile": "0b7f0638bc4df8150ded901c144a1d8ac2eb0bb0eeb89042bd39cf6b9d9bde66"
+      },
+      {
+        "path": "database/migrations/002_real_data_schema.sql",
+        "gitBlob": "b1dd730843d94540fb5689e3a56d63415380cce0",
+        "sha256WorkingFile": "50723ae0d970d63cc9b0703dbb061c30941b1ac9aeffa72a0c51432992ceec84"
+      },
+      {
+        "path": "database/migrations/003_security_idempotency.sql",
+        "gitBlob": "ad777e5353c59f0b414f437ab68da48650b2b15d",
+        "sha256WorkingFile": "7120184610e94a9f0247b2aab047badbfa46a9bafae8da68b0d5b54d9fc2b495"
+      },
+      {
+        "path": "database/migrations/004_user_area_scope.sql",
+        "gitBlob": "cb5a05f08841f87867a477b985efa13927b9bb20",
+        "sha256WorkingFile": "8ef8b956699e030bfcffd26e5127901f53e72c654501189b178e6accd730d389"
+      },
+      {
+        "path": "database/migrations/005_attachment_security.sql",
+        "gitBlob": "f248a079d3ce4e8fda676f4742240b852d859741",
+        "sha256WorkingFile": "90a16d5680d04bcd8c889d114c0e7f127b469bee83cb6ca8c8aba65fd6a1d9cd"
+      },
+      {
+        "path": "database/migrations/006_citizen_submissions.sql",
+        "gitBlob": "408373135f03754253a2307ad443f7c685d32774",
+        "sha256WorkingFile": "302abe23757ea206bea5666ef9491c6d060fa2219af53c81b7624cc934d1d304"
+      },
+      {
+        "path": "database/migrations/007_tokenize_national_id.sql",
+        "gitBlob": "1549fb3170f74e162cbd89c5002d7ec157660257",
+        "sha256WorkingFile": "ecfbc9ad53ba0bdd2c6e3eac4fb818a8e017d0588a16e90810dbe48e6a316fed"
+      },
+      {
+        "path": "database/migrations/008_notification_outbox.sql",
+        "gitBlob": "fea679ac8fc49365ba6ee458c1dc6940d974243e",
+        "sha256WorkingFile": "715e2a058a2515e4d7a613772b02ede03fbac95c5170e901d235a76706c1232c"
+      },
+      {
+        "path": "database/migrations/009_staff_mfa.sql",
+        "gitBlob": "8c34e88c6d477405729509fe018d2eea9d55a5cf",
+        "sha256WorkingFile": "6706cb9f5b6345cb8e2d05b686257bc593204b976aae2e122defa361f963e420"
+      },
+      {
+        "path": "database/migrations/010_repair_thai_village_names.sql",
+        "gitBlob": "afa1df9b58a26d80d8c40409411df6712fcff01c",
+        "sha256WorkingFile": "5b483db1475b5e90b8967a3b5d519a50a2096a99eb185500c38f9f35854d2d15"
+      },
+      {
+        "path": "database/migrations/011_line_native_citizen_workflow.sql",
+        "gitBlob": "f7a49cde2d55015c2f4e0ab3b6c449bd0b60c49b",
+        "sha256WorkingFile": "6e3711e3c839de60394c644cc7b935f131249107eb913b660bfbb2bfbf121fd9"
+      },
+      {
+        "path": "database/migrations/012_line_rich_menu_complete.sql",
+        "gitBlob": "b599e4258d0be1f1309c2a326e73e6643edcf6e6",
+        "sha256WorkingFile": "7e420df0cc6035014a44f93ef3d7f6b3ef3d374f1197558b5539a8cca388a9ad"
+      },
+      {
+        "path": "database/migrations/013_line_rich_menu_wizard.sql",
+        "gitBlob": "c469d47bc6c5b5fa6ec6d492417e95a74755e68b",
+        "sha256WorkingFile": "c80cc77b852b434bc58717412cffa1c69c121b8d0e4d1e9e6681158371fb55eb"
+      },
+      {
+        "path": "database/migrations/014_line_rich_menu_v12_cache.sql",
+        "gitBlob": "4273420dc1c03ae804b666dca44f6e0be6a8a937",
+        "sha256WorkingFile": "1ef02bc2bfbb5fcc9c2c0998fe2a5e2839099248bbcbc9a8f7370d0d813955c1"
+      },
+      {
+        "path": "database/migrations/015_waste_management_schema.sql",
+        "gitBlob": "0949bfa7162a0f9fe2a2a913a5c49571990f3493",
+        "sha256WorkingFile": "312018170b83b5be97c1fc15dbaac425e387e10f42540d49328bb266ded61a2f"
+      },
+      {
+        "path": "database/migrations/016_waste_line_workflows.sql",
+        "gitBlob": "c2e1e322ec256ecdaead396949972af5011e710e",
+        "sha256WorkingFile": "560b294fe0741929f3055aee51cc1b632825b8ef23575bcdddc2e3b83bbbe287"
+      },
+      {
+        "path": "database/migrations/017_pet_registry_completion.sql",
+        "gitBlob": "84ff52dcd6fc02f6024aacfdee0134af3d1352fa",
+        "sha256WorkingFile": "e217c308042163c5ae7bbec46f9a5607b3ff21017014ea82aa291c4c6cd645a9"
+      },
+      {
+        "path": "database/migrations/018_waste_priority_readiness.sql",
+        "gitBlob": "2abd2a8464b373bdc6f16da079650e864a8923b7",
+        "sha256WorkingFile": "7329fa0a1d89cb0309c717f967f5e5769329b4691cfca9b1349a796049632647"
+      },
+      {
+        "path": "database/migrations/019_waste_line_channels_and_route_assignment.sql",
+        "gitBlob": "b6f7c6cb5ddfc5fa63f41c82e2f09295a807bbb3",
+        "sha256WorkingFile": "3c143d52bd33a858460d2578b9a9835078880dae0d829381e213d1b639762630"
+      },
+      {
+        "path": "database/migrations/020_waste_route_optimization.sql",
+        "gitBlob": "ef9d43c91dc984630f604bb1f43c3f5b1afebfce",
+        "sha256WorkingFile": "3a046d307e3cf24aa9a359b3a7daf6e19e0d419c4a090a971a652c4dfbd639aa"
+      },
+      {
+        "path": "database/migrations/021_waste_plan_publication.sql",
+        "gitBlob": "1d275fcd67c11ec7c48af999e6d65bebdeb55318",
+        "sha256WorkingFile": "dc19e7a998ea8af377475e492dcf1f36335231c2bb578c924b98a68bda3cc141"
+      },
+      {
+        "path": "database/migrations/022_waste_route_stop_active_sequence.sql",
+        "gitBlob": "0862befae157080863a8eb11b4e73c30966913ea",
+        "sha256WorkingFile": "99822ec9d05c6a6e052e5b43ac3416a5e1de1fab1938cad7bd99e4bb90ed2122"
+      },
+      {
+        "path": "database/migrations/023_waste_service_user_line_unlink.sql",
+        "gitBlob": "19ea6fab68d527a615ed8316ea35ef5203968ec3",
+        "sha256WorkingFile": "d6567832cd2c4b6a4c42475dbbe7de0fbada9d25610d171b43f80f2dbf58b9bc"
+      },
+      {
+        "path": "database/migrations/024_waste_p0_fr17.sql",
+        "gitBlob": "64ff89297ebf5608a7c782ac5a636ce461daafb1",
+        "sha256WorkingFile": "a7a719290f39dfc501d265311a89ca83725e32fbfecc7523ba6f6b9315a0b964"
+      },
+      {
+        "path": "database/migrations/025_waste_driver_identity_fr2.sql",
+        "gitBlob": "c10e65501891faeb79bcb1715a9dfc079a1255c5",
+        "sha256WorkingFile": "028f72e51e2309ddda2b556935683a18bdd35b5a0fe13efcd223a1999acb8556"
+      },
+      {
+        "path": "database/migrations/026_line_channel_settings.sql",
+        "gitBlob": "6a3bb7f5fa789d9711b00755a9b9f4b98a7e616e",
+        "sha256WorkingFile": "2124640b5d94fab7afefef32dc74811189563b33a9ba5f7db977b9652ef8e23f"
+      },
+      {
+        "path": "database/migrations/027_waste_incident_replacement_driver.sql",
+        "gitBlob": "0fff4b06ee8920bf4f71077e5971b891f6cbf3d9",
+        "sha256WorkingFile": "ba737d65a849a83000f8168493214f08f6820ac9671705ce5fa974fb096f1654"
+      },
+      {
+        "path": "database/migrations/027_waste_stop_collected_notice.sql",
+        "gitBlob": "ae1ed616cdd14c5def499ea06e5ce6ea2b76532b",
+        "sha256WorkingFile": "7b3e7688ae99c81668bdd2525bf7a9bda1d0352a6ab11696577d4a3d58f54329"
+      },
+      {
+        "path": "database/migrations/028_waste_no_route_complete_notice.sql",
+        "gitBlob": "6043405ab1263e978fe3644405a6a5bc863237a4",
+        "sha256WorkingFile": "7c42bcf2b119aae653413cdaff0e16b88d3d7eaf04ffb4e89b2e8d7de7e5c926"
+      },
+      {
+        "path": "database/migrations/029_waste_plan_readiness_confirmation.sql",
+        "gitBlob": "3ed992a5c172114955ce9d3e20904c561faba23a",
+        "sha256WorkingFile": "959672065642da7c52e49aacf9671ef33e84539029dabe3656b8bad01b7665e8"
+      },
+      {
+        "path": "database/migrations/030_smart_tha_pho_single_line_channel.sql",
+        "gitBlob": "5ccd56da7242ef5c2d8ab2e542f93b167dfee6d6",
+        "sha256WorkingFile": "01f03a926d0f3d2e20508e1e8ea0007bfbc55d7abd79b1fd7cc0338b0a4deb16"
+      }
+    ],
+    "liveDatabaseInspected": false,
+    "databaseDumpExported": false,
+    "productionStarted": false,
+    "gitPushPerformed": false,
+    "architectureBoundaryCheck": "PASS",
+    "fullApplicationTestsRun": false,
+    "buildRun": false,
+    "documentSourceFiles": [
+      {
+        "path": ".env.example",
+        "sha256": "7ca83d6dd5874b46b9fc4f6ec6d1a4ade732b31c3038bf1fbe3357696359bdaf"
+      },
+      {
+        "path": ".github/workflows/deploy-smart-tha-pho-pages.yml",
+        "sha256": "c2f6419c4278d2b89e733d4464b276fdd7a9f0706c9e2b9dfab8e84a933c2849"
+      },
+      {
+        "path": ".gitignore",
+        "sha256": "1f478f6b057e06e20ca8f52f5914d5066bdeb32b9826638b396255a580d165aa"
+      },
+      {
+        "path": "AGENTS.md",
+        "sha256": "73457c7c58579aeb2d7db3a4c8c81e0dab85f3d6d4f72a1aefd7350b66d07fd5"
+      },
+      {
+        "path": "apps/api/src/app.js",
+        "sha256": "d8fea9e985485fa5e7d618ebefa8d69f176430e2e1fa10d651005650155174b9"
+      },
+      {
+        "path": "apps/api/src/application/submissions/CitizenSubmissionApprovalService.js",
+        "sha256": "a1e29941bd9dec599b27fb6071cc9139feaf56a330b2a51b090fe2fcef614664"
+      },
+      {
+        "path": "apps/api/src/composition-root/createApiRuntime.js",
+        "sha256": "3bccaa0026821a020c2cf179dc16437ae7593e26e421290cd03fea06e346c5f1"
+      },
+      {
+        "path": "apps/api/src/composition-root/createHttpApplication.js",
+        "sha256": "31dd91d69d9360d28d5df3fb9c4a9650e6bcbd9676bf3eac34c7ac79856615a9"
+      },
+      {
+        "path": "apps/api/src/composition-root/createWasteManagementServices.js",
+        "sha256": "0549779a2341c66a61147856b75d0cccbb66dc1213a0525b3f23acac62c37ac4"
+      },
+      {
+        "path": "apps/api/src/contracts/openapi.js",
+        "sha256": "847d38106b6eeaa8aba796800a419f772d66e1acbe51a0be750ac71ee5c61c0c"
+      },
+      {
+        "path": "apps/api/src/core/config.js",
+        "sha256": "3f3a581d414bcad1c6a9717ca13f74600eb44d658e872e5a1595a913aebf2fd6"
+      },
+      {
+        "path": "apps/api/src/domain/registrations/entities/Registration.js",
+        "sha256": "9a0866edc62f3f9b0dd3cd867a33d2f58431fcf045254ee8ee6a4acf1ae01e4a"
+      },
+      {
+        "path": "apps/api/src/domain/waste/entities/WasteOperationPlan.js",
+        "sha256": "43a24f737fc95ac83893f4743cac5d33626a0305a24af06c1193ccff2d735852"
+      },
+      {
+        "path": "apps/api/src/infrastructure/server/ApiRuntime.js",
+        "sha256": "7466e6bed9d69f4093286fd50952e8d010df8eee27f565792b7cfb8302471c7f"
+      },
+      {
+        "path": "apps/api/src/modules/line/SmartThaPhoLineMenu.js",
+        "sha256": "4d5b943e85edbe1bec1022b11ea7a275f0701b4039036ad68461ae45b5b9003f"
+      },
+      {
+        "path": "apps/api/src/modules/line/lineBot.js",
+        "sha256": "297bb8e03db251d36d5f5eab9b297bfa23f4844240d36dd9ae581fc24bb8d2ea"
+      },
+      {
+        "path": "apps/api/src/modules/line/lineNativeCitizen.v10.js",
+        "sha256": "fddac39c659d00c0eee1c3a1b1cb97638d81b6c91601e8cac4a1fac597eb360c"
+      },
+      {
+        "path": "apps/api/src/modules/line/lineNotifications.js",
+        "sha256": "b9031e9ac89a1edeb939353a25645c27c33fe8dbc34437ecaa5928b4f662f41b"
+      },
+      {
+        "path": "apps/api/src/modules/line/wasteLine.js",
+        "sha256": "58dfbf0db4e1ca184c0b2bb6e52db2e0cd9223d8a60e1656ede42ef9b71ad252"
+      },
+      {
+        "path": "apps/api/src/modules/waste/waste.router.js",
+        "sha256": "58b1e61ac5ecc413470d6d8574ee9b2108c5c94f9b6b319c9ed79fed0b97ffa1"
+      },
+      {
+        "path": "apps/api/src/server.js",
+        "sha256": "c7a8aff6188b6a271f42c94cc16deea9ede1bbddf3c2a3525114b957e8de0d0a"
+      },
+      {
+        "path": "apps/api/test/domainEntities.test.js",
+        "sha256": "a977dae7f92668b3256b7df4c0912640642b9dfd849be48ff9b0b7343ca3beb2"
+      },
+      {
+        "path": "apps/api/test/wastePlanPublication.test.js",
+        "sha256": "1424d2e289c24adcbe4d94437b12cffa341924b8fdd0bc72a37f8540811316a0"
+      },
+      {
+        "path": "apps/disaster-management/src/App.jsx",
+        "sha256": "4a076c944281e0a9d48bbdfeab3de11727fca626c0008c33494220b20b372c13"
+      },
+      {
+        "path": "apps/disaster-management/src/main.jsx",
+        "sha256": "6dd2edebbd0505c84b95035a48f35813d6d0d51edd937456e50348a824e290f1"
+      },
+      {
+        "path": "apps/portal/src/application/AuthenticateStaffUseCase.js",
+        "sha256": "f50ecb0c936b41193e73caf331c52f97959198cced878c6a2f823434dca9a1e3"
+      },
+      {
+        "path": "apps/prms-tsm/src/composition-root/createPrmsApplication.js",
+        "sha256": "4b8d2675b5f9666244f26ba49aec86bf94f5920ad369acd2a99546dc184dd769"
+      },
+      {
+        "path": "apps/prms-tsm/src/main.jsx",
+        "sha256": "a15257c00b012c3ab35d81dc006cd3c93f475fa42a9b2d22a8fba49ef8fa5679"
+      },
+      {
+        "path": "apps/prms-tsm/src/pages/OwnersPage.jsx",
+        "sha256": "652d37d66b9626a5abce929f53d7a434bf3e87e565835182f3dd0dbe7742b9d0"
+      },
+      {
+        "path": "apps/prms-tsm/src/pages/RegistrationsPage.jsx",
+        "sha256": "2d5300ac86e3f96b68eb62d7b1b29ee131ff484fe90a677282cc3094cf4fb3eb"
+      },
+      {
+        "path": "apps/prms-tsm/src/pages/ServicesPage.jsx",
+        "sha256": "02b62e0a3822652cc0a864751184a34984e9fbc1ae23435270d447e888902de3"
+      },
+      {
+        "path": "apps/prms-tsm/test/domainPolicies.test.js",
+        "sha256": "264fec80aea4dee234a0f2ef43bdce105ac38f1a39354352ff823d1544c549b2"
+      },
+      {
+        "path": "apps/waste-management/src/composition-root/createWasteApplication.js",
+        "sha256": "7b560d95aa1358459475ea58ae030f97972fe6129f000ab4e313fd05ef7a45aa"
+      },
+      {
+        "path": "apps/waste-management/src/main.jsx",
+        "sha256": "6e5296832c2cce1a3018c8e2f74a2066bf4f2a081c6beb9d26f4029179608a39"
+      },
+      {
+        "path": "apps/waste-management/src/pages/DriverTrackingPage.jsx",
+        "sha256": "d39074909c5ec159103553252755105e9ca63ac3d45a5a8320fdb9a10e963d7b"
+      },
+      {
+        "path": "apps/waste-management/src/pages/PlansPage.jsx",
+        "sha256": "4d9ece847fbf63550c526266be3b0f61dc41e3e496cbd7d6450a8db9b5c9b3d5"
+      },
+      {
+        "path": "apps/waste-management/test/domainPolicies.test.js",
+        "sha256": "0ef691d472d5f6dd2f5d693f93cc5afb042e949de3ab06f52e6677c11c9a91bc"
+      },
+      {
+        "path": "apps/waterworks-management/test/waterMonitoring.test.js",
+        "sha256": "a3de0aca35152965ac4a63f1ed85a3e7f1b20b3a5a785bf3a502a59317c6a591"
+      },
+      {
+        "path": "database/bootstrap/create_database.sql",
+        "sha256": "6f5258093e9942a57d3f8b10c8e2ec2cb48a47dd2b500b01fd4fe7f594bb4953"
+      },
+      {
+        "path": "database/bootstrap/create_tables.sql",
+        "sha256": "87e3354052b96e4a8098c691607437d95326c79e4035b14d02c89568c427fe03"
+      },
+      {
+        "path": "database/migrations/015_waste_management_schema.sql",
+        "sha256": "312018170b83b5be97c1fc15dbaac425e387e10f42540d49328bb266ded61a2f"
+      },
+      {
+        "path": "database/migrations/017_pet_registry_completion.sql",
+        "sha256": "e217c308042163c5ae7bbec46f9a5607b3ff21017014ea82aa291c4c6cd645a9"
+      },
+      {
+        "path": "package-lock.json",
+        "sha256": "748e8da016b88154b67d680587b5f6412640db3800b844adfeddd245a32c2ee8"
+      },
+      {
+        "path": "package.json",
+        "sha256": "88a4ed59bf21588730547915e19c7c154a98da2f7692af466472c9908e04809d"
+      },
+      {
+        "path": "packages/web-core/src/MunicipalWorkspace.jsx",
+        "sha256": "ed4a72a29c5ebfa189b8be020f511866e6e1360ef09a7582b7098947544cdb30"
+      },
+      {
+        "path": "packages/web-core/src/api.js",
+        "sha256": "7623a1140927d25ac1e965e80212549a940e303b75d5c64e917f796654f661eb"
+      },
+      {
+        "path": "packages/web-core/src/application/MunicipalWorkspaceController.js",
+        "sha256": "62c47a112bde9aca5f5da564dd8da4cd25922e89c28da098c59b3d86338f7a6e"
+      },
+      {
+        "path": "packages/web-core/src/application/SessionStore.js",
+        "sha256": "6524ad244d8c344958c49e2d42ca86e23b44f97b16c615ea3531ebb8cc169404"
+      },
+      {
+        "path": "packages/web-core/src/application/SystemApplicationController.js",
+        "sha256": "e81b438f1a7cd6ea25f5b087998fbb7dc1ba7679374ad3a1370b41b181e5ee53"
+      },
+      {
+        "path": "scripts/admin/create-admin.js",
+        "sha256": "20f211c02b4a690781165004c05bed8dff5d115e7443749b9dcab8c370db147f"
+      },
+      {
+        "path": "scripts/server/start-public.ps1",
+        "sha256": "af902a86ea03c903f677eaa8cff3753e028ec93147ee886d243c5d778e79959a"
+      },
+      {
+        "path": "scripts/server/start-smart-tha-pho.ps1",
+        "sha256": "e687e8c44bd111a3563f922d1b701379b3fb82737eed1d18ea6a8718d8e0f163"
+      }
+    ]
+  }
 }

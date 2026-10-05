@@ -2,7 +2,7 @@
 
 เอกสารนี้อธิบายโครงสร้างโค้ด จุดเริ่มทำงาน หน้าที่ของไฟล์ และแนวทางพัฒนาต่อสำหรับผู้รับช่วงงานทั้งสี่ระบบ ใช้คู่กับ source repository `0tyght/smart-tha-pho` และเอกสารออกแบบแยกระบบ
 
-ตรวจจาก working tree วันที่ 5 ตุลาคม 2569 ไม่ใช่การรับรองว่าโค้ดในเครื่องตรงกับ GitHub หรือทุกฟังก์ชันพร้อมใช้งานจริง ดูหลักฐานเวอร์ชันใน [สถานะ Git](GIT_STATUS.md)
+ตรวจจากโค้ดหลังรวมงานในเครื่องกับ GitHub วันที่ 5 ตุลาคม 2569 ผ่านการทดสอบและ build ตามผลใน [สถานะ Git](GIT_STATUS.md) ผลนี้ไม่ใช่การรับรองว่าทุกฟังก์ชันพร้อมใช้งานจริงหรือผ่านการทดสอบกับอุปกรณ์และข้อมูล production แล้ว
 
 ## 1. ภาพรวมระบบ
 
@@ -69,7 +69,7 @@ smart-tha-pho/
 
 Portal ใช้ `apps/portal/src/application/AuthenticateStaffUseCase.js` เรียก login/MFA ผ่าน API และบันทึก session ก่อนเปลี่ยนระบบ ส่วนร่วมอยู่ใน `packages/web-core/src/application/SessionStore.js`, `NavigationService.js` และ `SystemApplicationController.js`
 
-`packages/web-core/src/api.js` มี `ApiClient` ส่ง Bearer token แปลง path ที่เริ่มด้วย `/api/` เป็น path `/v1/` และจัดการการเรียก API ส่วน `infrastructure/RuntimeConfigRepository.js` หา API base URL โค้ดไฟล์นี้ในเครื่องต่างจาก remote ล่าสุด: ในเครื่องใช้ URL ที่ฝังตอน build ก่อน แต่ remote อ่าน runtime configuration ปัจจุบันก่อนและใช้ค่า build เป็น fallback จึงต้องตรวจและรวมงานก่อนกำหนด release ส่งมอบ
+`packages/web-core/src/api.js` มี `ApiClient` ส่ง Bearer token แปลง path ที่เริ่มด้วย `/api/` เป็น path `/v1/` และจัดการการเรียก API ส่วน `infrastructure/RuntimeConfigRepository.js` หา API base URL โดยอ่าน runtime configuration ปัจจุบันก่อนและใช้ค่า build เป็น fallback เพื่อรองรับการเปลี่ยน URL ของ tunnel โดยไม่ยึด URL เก่าที่ฝังใน build
 
 ### LINE และงานเบื้องหลัง
 
@@ -119,7 +119,7 @@ path ในตารางนี้เริ่มจาก `apps/api/src/` ท�
 
 ## 6. เตรียมเครื่องสำหรับพัฒนา
 
-ทำใน environment พัฒนาแยกจากข้อมูลจริง ก่อนติดตั้งให้เลือก snapshot/commit ที่รวมงานในเครื่องกับ remote แล้ว คู่มือนี้ไม่ใช่คำสั่งเปิดระบบ production
+ทำใน environment พัฒนาแยกจากข้อมูลจริง โดยใช้ commit ที่รวมงานและผ่านการตรวจตาม [สถานะ Git](GIT_STATUS.md) คู่มือนี้ไม่ใช่คำสั่งเปิดระบบ production
 
 1. ใช้ Node.js 22 ตาม CI และ npm พร้อม `package-lock.json`
 2. สร้าง `.env` จาก `.env.example`; กำหนดฐานข้อมูลและค่าความปลอดภัยของ environment พัฒนา
@@ -147,7 +147,7 @@ npm test
 npm run build
 ```
 
-ในรอบจัดทำคู่มือนี้รันเฉพาะ `architecture:check` และผ่าน ยังไม่ได้รันชุดทดสอบทั้งหมด build ใหม่ UAT หรือทดสอบกู้คืนข้อมูล ควรทำใน environment ที่แยกจากระบบใช้งานและบันทึกผลพร้อม commit ที่ตรวจ
+หลังรวมงานวันที่ 5 ตุลาคม 2569 รัน `npm test` ผ่านครบ 286 รายการและ `architecture:check` ผ่าน จากนั้น `npm run build` ผ่านทั้ง portal สุนัขและแมว ขยะ สาธารณภัย และประปา เครื่องที่ตรวจใช้ Node.js 24.18.0 ส่วน CI กำหนด Node.js 22 ผลในเครื่องนี้จึงไม่ใช่ผลยืนยัน Node.js 22 โดยตรง ยังไม่ได้ทำ UAT ทดสอบกู้คืนฐานข้อมูลจริง หรือทดสอบเชื่อมอุปกรณ์จริง ต้องตรวจแยกก่อนรับรอง production
 
 ก่อนส่งมอบต้องกำหนด release commit/tag เดียวกันสำหรับโค้ดและเอกสาร ตรวจ SQL ที่ติดตั้งจริง ส่งสำรองข้อมูล/ไฟล์แนบ/คีย์อย่างปลอดภัย และให้ผู้รับมอบทดลองกู้คืนกับ test environment รายการที่ยังไม่พัฒนาหรือไม่ได้ตรวจรับให้ระบุแยกไว้ ไม่รวมเป็นงานเสร็จ
 
