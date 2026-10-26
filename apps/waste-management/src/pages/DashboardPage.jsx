@@ -134,6 +134,7 @@ export default function DashboardPage({ token, navigate }) {
     plans={visiblePlans}
     routes={routes}
     selectedRouteId={selectedRouteId}
+    simulationEnabled
   />
 
   <div

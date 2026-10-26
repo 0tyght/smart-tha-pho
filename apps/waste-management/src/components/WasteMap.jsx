@@ -1,7 +1,9 @@
-import { useCallback, useEffect, useRef } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 import useLeafletResize from "../lib/useLeafletResize.js";
+import WasteRouteSimulation from "./WasteRouteSimulation.jsx";
+import WasteFleetMotion from "./WasteFleetMotion.jsx";
 import {
   THA_PHO_CENTER,
   routeMapColor,
@@ -62,6 +64,10 @@ function isFiniteCoordinate(
   longitude,
 ) {
   return (
+    latitude != null &&
+    longitude != null &&
+    String(latitude).trim() !== "" &&
+    String(longitude).trim() !== "" &&
     Number.isFinite(Number(latitude)) &&
     Number.isFinite(Number(longitude))
   );
@@ -179,11 +185,22 @@ export default function WasteMap({
   trackingStatus = "",
   focusKey = "",
   activeStopId = "",
+  simulationEnabled = false,
+  simulationRouteLabel = "",
+  simulationAutoPlay = false,
+  onVehicleClick = null,
+  selectedVehicleId = "",
+  fleetVehicles = null,
+  fleetExample = false,
+  fleetSpeedKph = 20,
+  fleetPaused = false,
+  routeColor = "",
 }) {
   const rootRef = useRef(null);
   const mapRef = useRef(null);
   const contentBoundsRef = useRef(null);
   const lastAutoFitKeyRef = useRef("");
+  const [leafletMap, setLeafletMap] = useState(null);
 
   useEffect(() => {
     if (!rootRef.current) {
@@ -240,9 +257,11 @@ export default function WasteMap({
     );
 
     mapRef.current = map;
+    setLeafletMap(map);
 
-    window.requestAnimationFrame(
+    const initialLayoutFrame = window.requestAnimationFrame(
       () => {
+        if (mapRef.current !== map) return;
         map.invalidateSize({
           pan: false,
         });
@@ -251,6 +270,7 @@ export default function WasteMap({
     );
 
     return () => {
+      window.cancelAnimationFrame(initialLayoutFrame);
       map.off(
         "resize",
         keepInside,
@@ -337,6 +357,7 @@ export default function WasteMap({
         const current =
           plans.find(
             (plan) =>
+              (!onVehicleClick || plan.id === selectedVehicleId) &&
               isFiniteCoordinate(
                 plan.latitude,
                 plan.longitude,
@@ -362,7 +383,7 @@ export default function WasteMap({
           },
         );
       },
-      [plans],
+      [plans, onVehicleClick, selectedVehicleId],
     );
 
   useEffect(() => {
@@ -408,10 +429,10 @@ export default function WasteMap({
           routeGeojson,
           {
             style: {
-              color:
+              color: routeColor || (
                 trackingMode
                   ? "#a9cbb8"
-                  : "#278432",
+                  : "#278432"),
               weight:
                 trackingMode
                   ? 8
@@ -439,7 +460,7 @@ export default function WasteMap({
           routeGeojson,
           {
             style: {
-              color: "#3f956c",
+              color: routeColor || "#3f956c",
               weight: 3,
               opacity: 0.78,
               dashArray: "10 15",
@@ -764,6 +785,9 @@ export default function WasteMap({
 
     plans.forEach(
       (plan) => {
+        if (!isFiniteCoordinate(plan.latitude, plan.longitude)) {
+          return;
+        }
         const latitude =
           Number(plan.latitude);
 
@@ -822,12 +846,27 @@ export default function WasteMap({
           `<strong>${escapeHtml(plan.vehicleCode || "รถเก็บขยะ")}</strong><br>${escapeHtml(plan.routeName || "ไม่ระบุเส้นทาง")}<br>${escapeHtml(plan.driverName || "ไม่ระบุพนักงานประจำรถขยะ")}`,
         );
 
+        if (onVehicleClick) marker.on("click", () => onVehicleClick(plan.id));
+        if (trackingMode && onVehicleClick) {
+          marker.bindTooltip(escapeHtml(plan.vehicleCode || "รถเก็บขยะ"), { permanent: true, direction: "top", offset: [0, -28] });
+          if (plan.id === selectedVehicleId) marker.setZIndexOffset(2000);
+        }
+
         points.push([
           latitude,
           longitude,
         ]);
       },
     );
+
+    if (fleetVehicles) {
+      fleetVehicles.forEach((vehicle) => {
+        if (selectedVehicleId && vehicle.id !== selectedVehicleId) return;
+        if (vehicle.position && isFiniteCoordinate(vehicle.position.latitude, vehicle.position.longitude)) points.push([vehicle.position.latitude, vehicle.position.longitude]);
+        // Fit the fleet's working area without drawing unselected routes.
+        if (!selectedVehicleId && vehicle.route?.routeGeojson) addLayerBounds(points, L.geoJSON(vehicle.route.routeGeojson));
+      });
+    }
 
     const nextBounds =
       points.length
@@ -861,9 +900,6 @@ export default function WasteMap({
         lastAutoFitKeyRef.current !==
           autoFitIdentity
       ) {
-        lastAutoFitKeyRef.current =
-          autoFitIdentity;
-
         // Leaflet อาจคำนวณขนาด map ก่อน grid/layout จัดตัวเสร็จใน initial render.
         // invalidateSize + delayed fit ทำให้แผนแรก auto-focus ได้โดยไม่ต้องเลือกซ้ำ.
         autoFitTimer =
@@ -901,6 +937,8 @@ export default function WasteMap({
                     },
                   );
 
+                  lastAutoFitKeyRef.current = autoFitIdentity;
+
                   enforceThaPhoViewport(
                     currentMap,
                   );
@@ -936,11 +974,16 @@ export default function WasteMap({
     trackingStatus,
     focusKey,
     activeStopId,
+    onVehicleClick,
+    selectedVehicleId,
+    fleetVehicles,
+    routeColor,
   ]);
 
   const hasVehiclePosition =
     plans.some(
       (plan) =>
+        (!onVehicleClick || plan.id === selectedVehicleId) &&
         isFiniteCoordinate(
           plan.latitude,
           plan.longitude,
@@ -984,6 +1027,21 @@ export default function WasteMap({
           ) : null}
         </div>
       ) : null}
+      {simulationEnabled && leafletMap ? (
+        <WasteRouteSimulation
+          map={leafletMap}
+          mapElement={rootRef.current}
+          routeGeojson={routeGeojson}
+          routes={routes}
+          selectedRouteId={selectedRouteId}
+          routeLabel={simulationRouteLabel}
+          focusKey={focusKey}
+          autoPlay={simulationAutoPlay}
+        />
+      ) : null}
+      {fleetVehicles && leafletMap ? <WasteFleetMotion map={leafletMap} mapElement={rootRef.current}
+        vehicles={fleetVehicles} example={fleetExample} selectedId={selectedVehicleId}
+        speedKph={fleetSpeedKph} paused={fleetPaused} onSelect={onVehicleClick} /> : null}
     </div>
   );
 }

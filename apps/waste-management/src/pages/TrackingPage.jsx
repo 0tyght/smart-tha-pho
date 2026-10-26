@@ -4,6 +4,7 @@ import WasteMap from "../components/WasteMap.jsx";
 import { EmptyState, ErrorNotice, LoadingState, PageHead, StatusBadge, formatDate, formatNumber, toDateInput } from "../components/ui.jsx";
 import { LocationHistoryPolicy } from "../application/LocationHistoryPolicy.js";
 import { useSilentPolling } from "../lib/useSilentPolling.js";
+import FleetTrackingPage from "./FleetTrackingPage.jsx";
 
 const locationHistoryPolicy = new LocationHistoryPolicy({ maximumGapMinutes: 5 });
 
@@ -62,7 +63,7 @@ function collectionProgress(stops = []) {
   };
 }
 
-export default function TrackingPage({ token, planId }) {
+function PlanHistoryTrackingPage({ token, planId }) {
   const api = useMemo(() => createWasteApplication(token), [token]);
   const [date, setDate] = useState(toDateInput());
   const [plans, setPlans] = useState([]);
@@ -219,6 +220,8 @@ export default function TrackingPage({ token, planId }) {
               history={track.locations || []}
               historySegments={historySegments}
               trackingMode
+              simulationEnabled
+              simulationRouteLabel={track.routeName}
               trackingStatus={track.status}
               activeStopId={nextStop?.id || ""}
               focusKey={`${selectedId}:${track.routeName || ""}`}
@@ -277,4 +280,10 @@ export default function TrackingPage({ token, planId }) {
       </>}
     </>}
   </>;
+}
+
+export default function TrackingPage({ token, planId }) {
+  const [history, setHistory] = useState(Boolean(planId));
+  if (!history) return <FleetTrackingPage token={token} onOpenHistory={() => setHistory(true)} />;
+  return <><button type="button" className="waste-button waste-button--secondary" onClick={() => setHistory(false)}>กลับหน้าตำแหน่งรถทั้งหมด</button><PlanHistoryTrackingPage token={token} planId={planId} /></>;
 }
