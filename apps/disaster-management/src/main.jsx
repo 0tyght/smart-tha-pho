@@ -1,5 +1,11 @@
 import React from "react";
 import { createRoot } from "react-dom/client";
-import App from "./App.jsx";
+import App from "./presentation/DisasterOperationsApp.jsx";
+import { createDisasterApplication } from "./composition-root/createDisasterApplication.js";
 import "@smart-thapho/web-core/theme.css";
-createRoot(document.getElementById("root")).render(<React.StrictMode><App /></React.StrictMode>);
+const application = createDisasterApplication();
+createRoot(document.getElementById("root")).render(
+  <React.StrictMode>
+    <App {...application} />
+  </React.StrictMode>,
+);

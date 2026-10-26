@@ -1,0 +1,149 @@
+.disaster-workspace {
+  display: grid;
+  grid-template-columns: minmax(0, 1.55fr) minmax(340px, 1fr);
+  gap: 20px;
+  align-items: start;
+}
+.disaster-workspace .ops-panel {
+  min-width: 0;
+}
+.ops-app .disaster-row-button {
+  border: 0;
+  display: block;
+  background: transparent;
+  padding: 4px 0;
+  text-align: left;
+  min-width: 160px;
+}
+.disaster-row-button strong {
+  font-size: 16px;
+}
+.disaster-row-button small {
+  display: block;
+  white-space: normal;
+}
+.disaster-workspace tr.is-selected {
+  background: #eef8ec;
+}
+.disaster-detail h2 {
+  margin-top: 5px;
+}
+.disaster-detail { scroll-margin-top: 96px; }
+.disaster-detail .ops-definition {
+  grid-template-columns: 90px 1fr;
+  font-size: 15px;
+  gap: 12px;
+}
+.disaster-assignment {
+  display: grid;
+  gap: 14px;
+  padding-top: 24px;
+  margin-top: 24px;
+  border-top: 1px solid #d8e5e9;
+}
+.disaster-assignment textarea {
+  min-height: 90px;
+}
+.disaster-history {
+  padding-top: 24px;
+  margin-top: 24px;
+  border-top: 1px solid #d8e5e9;
+}
+.disaster-history ol {
+  list-style: none;
+  padding: 0;
+  margin: 12px 0 0;
+}
+.disaster-history li {
+  padding: 14px 0;
+  border-bottom: 1px solid #e4ede6;
+}
+.disaster-history small {
+  display: block;
+  color: #526e79;
+}
+.disaster-history p {
+  font-size: 15px;
+}
+.disaster-map {
+  height: 580px;
+  width: 100%;
+  z-index: 0;
+}
+.disaster-board {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 20px;
+}
+.disaster-board > section {
+  padding: 18px;
+  background: #edf3ed;
+  border-radius: 10px;
+}
+.disaster-board h2 {
+  font-size: 18px;
+  margin-bottom: 18px;
+}
+.disaster-board button {
+  width: 100%;
+  display: grid;
+  text-align: left;
+  justify-content: stretch;
+  gap: 10px;
+  margin-bottom: 14px;
+  padding: 20px;
+  min-height: 170px;
+}
+.disaster-resource-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+.disaster-warning {
+  margin: 0 0 20px;
+  font-size: 14px;
+}
+.disaster-detail .ops-badge {
+  white-space: normal;
+}
+.disaster-warning {
+  background: transparent;
+  padding: 0;
+  margin: 0 0 12px;
+  max-width: none;
+}
+.disaster-detail .ops-definition {
+  margin: 16px 0;
+  gap: 9px;
+}
+.disaster-assignment {
+  gap: 10px;
+  padding-top: 16px;
+  margin-top: 16px;
+}
+@media (max-width: 1280px) {
+  .disaster-workspace {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .disaster-detail .ops-panel-body {
+    display: block;
+  }
+  .disaster-detail {
+    max-width: none;
+  }
+  .disaster-map {
+    height: 480px;
+  }
+}
+@media (max-width: 900px) {
+  .disaster-board,
+  .disaster-resource-grid {
+    grid-template-columns: 1fr;
+  }
+  .disaster-board button {
+    min-height: 0;
+  }
+  .disaster-map {
+    height: 380px;
+  }
+}

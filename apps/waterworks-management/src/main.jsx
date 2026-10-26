@@ -1,8 +1,14 @@
 import React from "react";
 import { createRoot } from "react-dom/client";
-import App from "./App.jsx";
+import App from "./presentation/WaterOperationsApp.jsx";
 import { createWaterworksApplication } from "./composition-root/createWaterworksApplication.js";
+import { createWaterBillingApplication } from "./composition-root/createWaterBillingApplication.js";
 import "@smart-thapho/web-core/theme.css";
 
 const controller = createWaterworksApplication();
-createRoot(document.getElementById("root")).render(<React.StrictMode><App controller={controller} /></React.StrictMode>);
+const billing = createWaterBillingApplication();
+createRoot(document.getElementById("root")).render(
+  <React.StrictMode>
+    <App controller={controller} billing={billing} />
+  </React.StrictMode>,
+);

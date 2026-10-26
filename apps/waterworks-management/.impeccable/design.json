@@ -1,0 +1,100 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-10-26T18:19:26Z",
+  "title": "Design System: Smart Tha Pho — Waterworks Management",
+  "extensions": {
+    "typographyMeta": {
+      "headline": { "displayName": "Page heading", "purpose": "Operational view title; responsive sizes are recorded in DESIGN.md." },
+      "body": { "displayName": "Working text", "purpose": "Thai operational copy, tables, and controls." },
+      "display": { "displayName": "Summary figure", "purpose": "Full volume values in the overview, not a marketing display role." }
+    },
+    "motion": [
+      { "name": "retained-equipment-state", "value": "filter .18s ease, opacity .18s ease", "purpose": "Inherited SVG equipment interaction only; the operations reduced-motion query disables transitions." }
+    ],
+    "breakpoints": [
+      { "name": "compact-rail", "value": "1100px" },
+      { "name": "review-steps-above-panel", "value": "1000px" },
+      { "name": "mobile-operations", "value": "760px" }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "Primary reading, output, and round-confirmation action. No distinct primary-hover background is authored in the source.",
+      "html": "<button class=\"ds-primary\">บันทึกเลขมิเตอร์</button>",
+      "css": ".ds-primary{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;padding:10px 16px;border:1px solid #087ca7;border-radius:8px;background:#087ca7;color:#fff;font:600 16px/1.55 Sarabun,Tahoma,sans-serif;cursor:pointer}.ds-primary:hover{background:#087ca7}.ds-primary:focus-visible{outline:3px solid #db9a15;outline-offset:3px}.ds-primary:disabled{opacity:.55;cursor:not-allowed}"
+    },
+    {
+      "name": "Secondary button",
+      "kind": "button",
+      "refersTo": "button-secondary",
+      "description": "Secondary actions use the shared white control with soft hover.",
+      "html": "<button class=\"ds-secondary\">กลับไปตรวจมิเตอร์</button>",
+      "css": ".ds-secondary{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;padding:10px 16px;border:1px solid #d8e5e9;border-radius:8px;background:#fff;color:#143946;font:600 16px/1.55 Sarabun,Tahoma,sans-serif;cursor:pointer}.ds-secondary:hover{background:#e7f6fc}.ds-secondary:focus-visible{outline:3px solid #db9a15;outline-offset:3px}.ds-secondary:disabled{opacity:.55;cursor:not-allowed}"
+    },
+    {
+      "name": "Numeric reading input",
+      "kind": "input",
+      "refersTo": "input",
+      "description": "Right-aligned household reading field with tabular numerals and a named label.",
+      "html": "<label class=\"ds-field\">เลขมิเตอร์ครั้งนี้<input class=\"ds-input\" type=\"number\" min=\"0\" step=\"0.01\" value=\"1250\" /></label>",
+      "css": ".ds-field{display:grid;gap:7px;color:#143946;font:600 16px/1.55 Sarabun,Tahoma,sans-serif}.ds-input{width:128px;min-height:44px;max-width:100%;padding:10px 12px;border:1px solid #9fb6c0;border-radius:6px;background:#fff;color:#143946;text-align:right;font:400 16px/1.55 Sarabun,Tahoma,sans-serif;font-variant-numeric:tabular-nums}.ds-input::placeholder{color:#526e79}.ds-input:focus-visible{outline:3px solid #db9a15;outline-offset:3px}"
+    },
+    {
+      "name": "Navigation item",
+      "kind": "nav",
+      "refersTo": "navigation-item",
+      "description": "Text-state preview of the existing dark rail navigation; runtime items also contain Phosphor icons.",
+      "html": "<nav class=\"ds-nav\" aria-label=\"เมนูระบบ\"><button class=\"ds-nav-item ds-active\" aria-current=\"page\">ภาพรวม</button><button class=\"ds-nav-item\">จดมิเตอร์</button></nav>",
+      "css": ".ds-nav{display:grid;gap:8px;padding:14px;background:#07465b}.ds-nav-item{display:inline-flex;align-items:center;justify-content:flex-start;gap:8px;min-height:44px;padding:13px 16px;border:0;border-radius:8px;background:transparent;color:#e7f4f8;text-align:left;font:600 16px/1.55 Sarabun,Tahoma,sans-serif;cursor:pointer}.ds-nav-item:hover{background:#ffffff16}.ds-nav-item.ds-active{background:#e7f6fc;color:#07465b}.ds-nav-item:focus-visible{outline:3px solid #db9a15;outline-offset:3px}"
+    },
+    {
+      "name": "Warning badge",
+      "kind": "chip",
+      "refersTo": "badge-warning",
+      "description": "Non-interactive missing or unsaved reading label; text retains the meaning independently of color.",
+      "html": "<span class=\"ds-badge-warning\">ยังไม่บันทึก</span>",
+      "css": ".ds-badge-warning{display:inline-flex;align-items:center;border-radius:5px;padding:4px 9px;background:#fff1cf;color:#84540b;font:400 14px/1.55 Sarabun,Tahoma,sans-serif;white-space:nowrap}"
+    },
+    {
+      "name": "Operations panel",
+      "kind": "card",
+      "refersTo": "panel",
+      "description": "Passive white panel with a divided heading and no box shadow.",
+      "html": "<section class=\"ds-panel\"><header class=\"ds-panel-heading\"><h2>ตรวจสอบก่อนยืนยันรอบ</h2></header><div class=\"ds-panel-body\">เปรียบเทียบพื้นที่และช่วงเวลาเดียวกัน</div></section>",
+      "css": ".ds-panel{overflow:hidden;border:1px solid #d8e5e9;border-radius:12px;background:#fff;color:#143946;font:400 16px/1.55 Sarabun,Tahoma,sans-serif}.ds-panel-heading{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:20px 22px;border-bottom:1px solid #d8e5e9}.ds-panel-heading h2{margin:0;font-family:Prompt,Sarabun,sans-serif;font-size:21px;line-height:1.4}.ds-panel-body{padding:22px}@media(max-width:760px){.ds-panel-heading,.ds-panel-body{padding:16px}.ds-panel-heading h2{font-size:19px}}"
+    },
+    {
+      "name": "Volume comparison",
+      "kind": "custom",
+      "refersTo": "output-meter",
+      "description": "Native meters supplement labeled full output and usage figures; their fill styling is authored for WebKit in the source.",
+      "html": "<div class=\"ds-comparison\"><div><span>น้ำจ่ายออก</span><meter aria-label=\"น้ำจ่ายออก\" min=\"0\" max=\"50000\" value=\"50000\"></meter><strong>50,000</strong></div><div><span>น้ำใช้จากมิเตอร์</span><meter aria-label=\"น้ำใช้จากมิเตอร์\" min=\"0\" max=\"50000\" value=\"42000\"></meter><strong>42,000</strong></div></div>",
+      "css": ".ds-comparison{display:grid;gap:24px;margin:4px 0 28px;color:#143946;font:400 16px/1.55 Sarabun,Tahoma,sans-serif}.ds-comparison>div{display:grid;grid-template-columns:150px minmax(100px,1fr) 100px;gap:18px;align-items:center}.ds-comparison meter{width:100%;height:34px;accent-color:#1599ca}.ds-comparison meter::-webkit-meter-bar{border:0;border-radius:4px;background:#e9f3f6}.ds-comparison meter::-webkit-meter-optimum-value{border-radius:4px;background:#1599ca}.ds-comparison>div:nth-child(2) meter::-webkit-meter-optimum-value{background:#19a291}.ds-comparison strong{text-align:right;font-variant-numeric:tabular-nums}@media(max-width:760px){.ds-comparison>div{grid-template-columns:1fr 90px;gap:8px}.ds-comparison meter{grid-column:1/-1;grid-row:2}.ds-comparison strong{grid-column:2;grid-row:1}}"
+    }
+  ],
+  "narrative": {
+    "overview": "This is an observed record of the approved Smart Tha Pho water operations interface, not a new identity proposal. It uses a dark-teal rail, pale working background, white bordered panels, Thai text, Prompt headings, Sarabun body text, and Phosphor interface icons. Summary figures, household reading tables, and round-review controls share the municipal operations shell.\n\nThe implemented surface is a functional browser-local prototype for volume reconciliation. The existing process diagram is retained as a separate code-native SVG illustration, not a new raster or live device view. The existing identity and surface choices are recorded in [PRODUCT.md](PRODUCT.md) and the [approved direction](../../docs/design/disaster-water-direction.md).",
+    "keyCharacteristics": [
+      "Dark-teal navigation and blue action accents over white working panels.",
+      "Full volume figures, units, scoped dates, and tabular numerals.",
+      "Flat borders and tonal selection rather than ornamental depth.",
+      "A retained process illustration separated from the reconciliation calculation."
+    ],
+    "dos": [
+      "Do retain the approved Smart Tha Pho identity, Thai system title, Prompt headings, and Sarabun working text.",
+      "Do keep full numbers, cubic-metre units, round dates, and area scope visible when comparing volume.",
+      "Do reuse the shared operations controls and pair saved or completeness color with its written label.",
+      "Do retain the process illustration as a separate, horizontally scrollable code-native reference."
+    ],
+    "donts": [
+      "Don't label the water difference as money, proven leakage, pressure, or water quality.",
+      "Don't present an incomplete or suspicious round as a confirmed balance.",
+      "Don't describe browser-local storage or the retained illustration as a central database or live device connection.",
+      "Don't normalize the older diagram palette into the operations tokens or replace the approved diagram as a side effect of extending a screen.",
+      "Don't use the generated design references as shipping backgrounds or raster assets; none were shipped for this extension."
+    ]
+  }
+}

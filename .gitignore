@@ -11,6 +11,7 @@ __pycache__/
 outputs/
 scripts/reports/
 .codex-tmp/
+qa-systems/
 ~$*.docx
 storage/uploads/*
 !storage/uploads/.gitkeep

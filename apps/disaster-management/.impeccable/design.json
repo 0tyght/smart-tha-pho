@@ -1,0 +1,95 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-10-26T18:19:26Z",
+  "title": "Design System: Smart Tha Pho — Disaster Management",
+  "extensions": {
+    "typographyMeta": {
+      "headline": { "displayName": "Page heading", "purpose": "Operational view title; responsive sizes are recorded in DESIGN.md." },
+      "body": { "displayName": "Working text", "purpose": "Thai operational copy, tables, and controls." }
+    },
+    "breakpoints": [
+      { "name": "incident-detail-stack", "value": "1280px" },
+      { "name": "compact-rail", "value": "1100px" },
+      { "name": "board-and-resources-stack", "value": "900px" },
+      { "name": "mobile-operations", "value": "760px" }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "Primary incident intake, assignment, and progress action. No distinct primary-hover background is authored in the source.",
+      "html": "<button class=\"ds-primary\">บันทึกสถานะ</button>",
+      "css": ".ds-primary{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;padding:10px 16px;border:1px solid #116536;border-radius:8px;background:#116536;color:#fff;font:600 16px/1.55 Sarabun,Tahoma,sans-serif;cursor:pointer}.ds-primary:hover{background:#116536}.ds-primary:focus-visible{outline:3px solid #db9a15;outline-offset:3px}.ds-primary:disabled{opacity:.55;cursor:not-allowed}"
+    },
+    {
+      "name": "Secondary button",
+      "kind": "button",
+      "refersTo": "button-secondary",
+      "description": "Secondary actions use the shared white control with soft hover.",
+      "html": "<button class=\"ds-secondary\">กลับไปคิวเหตุ</button>",
+      "css": ".ds-secondary{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;padding:10px 16px;border:1px solid #d8e5e9;border-radius:8px;background:#fff;color:#143946;font:600 16px/1.55 Sarabun,Tahoma,sans-serif;cursor:pointer}.ds-secondary:hover{background:#e8f5e7}.ds-secondary:focus-visible{outline:3px solid #db9a15;outline-offset:3px}.ds-secondary:disabled{opacity:.55;cursor:not-allowed}"
+    },
+    {
+      "name": "Text input",
+      "kind": "input",
+      "refersTo": "input",
+      "description": "Labeled incident text entry with the operations focus outline.",
+      "html": "<label class=\"ds-field\">สถานที่<input class=\"ds-input\" placeholder=\"หมู่บ้าน ถนน หรือจุดสังเกต\" /></label>",
+      "css": ".ds-field{display:grid;gap:7px;color:#143946;font:600 16px/1.55 Sarabun,Tahoma,sans-serif}.ds-input{min-height:44px;max-width:100%;padding:10px 12px;border:1px solid #9fb6c0;border-radius:6px;background:#fff;color:#143946;font:400 16px/1.55 Sarabun,Tahoma,sans-serif}.ds-input::placeholder{color:#526e79}.ds-input:focus-visible{outline:3px solid #db9a15;outline-offset:3px}"
+    },
+    {
+      "name": "Navigation item",
+      "kind": "nav",
+      "refersTo": "navigation-item",
+      "description": "Text-state preview of the existing dark rail navigation; runtime items also contain Phosphor icons.",
+      "html": "<nav class=\"ds-nav\" aria-label=\"เมนูระบบ\"><button class=\"ds-nav-item ds-active\" aria-current=\"page\">คิวรับแจ้งเหตุ</button><button class=\"ds-nav-item\">แผนที่เหตุ</button></nav>",
+      "css": ".ds-nav{display:grid;gap:8px;padding:14px;background:#104b2a}.ds-nav-item{display:inline-flex;align-items:center;justify-content:flex-start;gap:8px;min-height:44px;padding:13px 16px;border:0;border-radius:8px;background:transparent;color:#e7f4f8;text-align:left;font:600 16px/1.55 Sarabun,Tahoma,sans-serif;cursor:pointer}.ds-nav-item:hover{background:#ffffff16}.ds-nav-item.ds-active{background:#e8f5e7;color:#104b2a}.ds-nav-item:focus-visible{outline:3px solid #db9a15;outline-offset:3px}"
+    },
+    {
+      "name": "Warning badge",
+      "kind": "chip",
+      "refersTo": "badge-warning",
+      "description": "Non-interactive status label; text retains the meaning independently of color.",
+      "html": "<span class=\"ds-badge-warning\">รอมอบหมาย</span>",
+      "css": ".ds-badge-warning{display:inline-flex;align-items:center;border-radius:5px;padding:4px 9px;background:#fff1cf;color:#84540b;font:400 14px/1.55 Sarabun,Tahoma,sans-serif;white-space:nowrap}"
+    },
+    {
+      "name": "Operations panel",
+      "kind": "card",
+      "refersTo": "panel",
+      "description": "Passive white panel with a divided heading and no box shadow.",
+      "html": "<section class=\"ds-panel\"><header class=\"ds-panel-heading\"><h2>ประวัติการดำเนินงาน</h2></header><div class=\"ds-panel-body\">เลือกเหตุเพื่อดูรายละเอียด</div></section>",
+      "css": ".ds-panel{overflow:hidden;border:1px solid #d8e5e9;border-radius:12px;background:#fff;color:#143946;font:400 16px/1.55 Sarabun,Tahoma,sans-serif}.ds-panel-heading{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:20px 22px;border-bottom:1px solid #d8e5e9}.ds-panel-heading h2{margin:0;font-family:Prompt,Sarabun,sans-serif;font-size:21px;line-height:1.4}.ds-panel-body{padding:22px}@media(max-width:760px){.ds-panel-heading,.ds-panel-body{padding:16px}.ds-panel-heading h2{font-size:19px}}"
+    },
+    {
+      "name": "Selected incident row",
+      "kind": "custom",
+      "description": "Selected row fill plus the left-aligned borderless incident button from the inbox.",
+      "html": "<table class=\"ds-inbox\"><tbody><tr class=\"ds-selected\"><td><button class=\"ds-incident-button\"><strong>DIS-026 • น้ำท่วมขัง</strong><small>หมู่ 4 ตำบลท่าโพธิ์</small></button></td></tr></tbody></table>",
+      "css": ".ds-inbox{width:100%;border-collapse:collapse;font:400 16px/1.55 Sarabun,Tahoma,sans-serif;font-variant-numeric:tabular-nums}.ds-inbox td{padding:14px 16px;border-bottom:1px solid #d8e5e9;vertical-align:middle}.ds-selected{background:#eef8ec}.ds-incident-button{display:block;min-width:160px;min-height:44px;padding:4px 0;border:0;border-radius:8px;background:transparent;color:#143946;text-align:left;font:600 16px/1.55 Sarabun,Tahoma,sans-serif;cursor:pointer}.ds-incident-button:hover{background:transparent}.ds-incident-button strong{font-size:16px}.ds-incident-button small{display:block;margin-top:4px;color:#526e79;font-size:14px;white-space:normal}.ds-incident-button:focus-visible{outline:3px solid #db9a15;outline-offset:3px}@media(max-width:760px){.ds-inbox td{padding:12px}}"
+    }
+  ],
+  "narrative": {
+    "overview": "This is an observed record of the approved Smart Tha Pho disaster operations interface, not a new identity proposal. It uses a forest-green navigation rail, pale working background, white bordered panels, Thai text, Prompt headings, Sarabun body text, and Phosphor interface icons. Information is presented in tables, a selected-incident detail panel, and separate map and status-board views.\n\nThe implemented surface is a functional browser-local prototype. Storage, emergency-channel, LINE, and GPS limitations remain visible; no visual treatment implies a production connection. The existing identity and surface choices are recorded in [PRODUCT.md](PRODUCT.md) and the [approved direction](../../docs/design/disaster-water-direction.md).",
+    "keyCharacteristics": [
+      "Forest-green navigation and action accents over white working panels.",
+      "Readable Thai labels and explicit status text beside semantic color.",
+      "Flat borders and tonal selection rather than ornamental depth.",
+      "Shared operations controls with a task-specific incident detail panel."
+    ],
+    "dos": [
+      "Do retain the approved Smart Tha Pho identity, Thai system title, Prompt headings, and Sarabun working text.",
+      "Do reuse the shared operations controls and pair status color with its written label.",
+      "Do keep the browser-local and emergency-channel limitations visible.",
+      "Do preserve the narrow-screen selection-to-detail focus and scroll behavior."
+    ],
+    "donts": [
+      "Don't describe this prototype as live emergency dispatch, automatic LINE delivery, central storage, or vehicle GPS.",
+      "Don't turn the map or status board into the default incident-inbox composition.",
+      "Don't replace inherited tokens or normalize the documented palette and badge differences as a side effect of extending a screen.",
+      "Don't use the generated design references as shipping backgrounds or raster assets; none were shipped for this extension."
+    ]
+  }
+}

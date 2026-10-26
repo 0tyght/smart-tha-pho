@@ -1,0 +1,156 @@
+.water-comparison {
+  display: grid;
+  gap: 24px;
+  margin: 4px 0 28px;
+}
+.water-comparison > div {
+  display: grid;
+  grid-template-columns: 150px minmax(100px, 1fr) 100px;
+  gap: 18px;
+  align-items: center;
+}
+.water-comparison meter {
+  width: 100%;
+  height: 34px;
+  accent-color: #1599ca;
+}
+.water-comparison meter::-webkit-meter-bar {
+  background: #e9f3f6;
+  border: 0;
+  border-radius: 4px;
+}
+.water-comparison meter::-webkit-meter-optimum-value {
+  background: #1599ca;
+  border-radius: 4px;
+}
+.water-comparison > div:nth-child(2) meter::-webkit-meter-optimum-value {
+  background: #19a291;
+}
+.water-comparison strong {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+.water-review {
+  display: grid;
+  grid-template-columns: 210px minmax(0, 1fr);
+  gap: 24px;
+}
+.water-steps {
+  list-style: decimal;
+  list-style-position: inside;
+  margin: 0;
+  padding: 20px;
+  background: #fff;
+  border: 1px solid #d8e5e9;
+  border-radius: 12px;
+}
+.water-steps li {
+  padding: 20px 10px;
+}
+.water-steps li + li {
+  border-top: 1px solid #d8e5e9;
+}
+.water-steps small {
+  display: block;
+  margin: 8px 0 0 20px;
+  color: #526e79;
+}
+.water-steps .is-active {
+  background: #e7f6fc;
+  border-radius: 8px;
+}
+.water-review-actions {
+  justify-content: space-between;
+  margin-top: 24px;
+}
+.water-definition-row {
+  display: contents;
+}
+.water-reference-diagram {
+  overflow: auto;
+  padding: 20px;
+  background: #f8fcfd;
+}
+.water-reference-diagram .plant-metric-tag,
+.water-reference-diagram .tower-level,
+.water-reference-diagram .water-stage-button__value,
+.water-reference-diagram .water-stage-button__copy small,
+.water-reference-diagram .water-stage-button i,
+.water-reference-diagram .plant-status-pin {
+  display: none;
+}
+.water-reference-diagram .water-stage-strip {
+  grid-template-columns: repeat(4, minmax(180px, 1fr));
+  min-width: 780px;
+}
+.water-reference-diagram .water-stage-button {
+  box-shadow: none;
+  justify-content: flex-start;
+}
+.water-reference-diagram .water-stage-button__copy strong {
+  font-size: 15px;
+}
+.water-reference-diagram .water-process-map {
+  min-width: 1000px;
+}
+.water-reference-diagram .plant-flow__water {
+  animation: none;
+}
+.water-reference-diagram .water-plant-unit.is-selected {
+  filter: none;
+  opacity: 0.8;
+}
+.water-reference-diagram .water-process-map {
+  display: block !important;
+  width: 1100px;
+  max-width: none;
+}
+.water-reference-diagram .water-stage-strip {
+  display: none;
+}
+@media (max-width: 1000px) {
+  .water-review {
+    grid-template-columns: 1fr;
+  }
+  .water-steps {
+    display: flex;
+    gap: 12px;
+    justify-content: space-between;
+  }
+  .water-steps li {
+    padding: 10px;
+    font-size: 14px;
+  }
+  .water-steps li + li {
+    border: 0;
+  }
+  .water-steps small {
+    margin-left: 0;
+  }
+}
+@media (max-width: 760px) {
+  .water-comparison > div {
+    grid-template-columns: 1fr 90px;
+    gap: 8px;
+  }
+  .water-comparison meter {
+    grid-column: 1/-1;
+    grid-row: 2;
+  }
+  .water-comparison strong {
+    grid-column: 2;
+    grid-row: 1;
+  }
+  .water-steps {
+    display: block;
+  }
+  .water-steps li + li {
+    border-top: 1px solid #d8e5e9;
+  }
+  .water-review-actions {
+    align-items: stretch;
+  }
+  .water-review-actions button {
+    flex: 1;
+  }
+}

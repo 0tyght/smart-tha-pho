@@ -39,7 +39,7 @@ const SYSTEM_DEFINITIONS = [
   Object.freeze({
     id: "disaster",
     productName: "Disaster Management",
-    name: "ระบบบริหารจัดการบรรเทาสาธารณภัย",
+    name: "ระบบป้องกันและบรรเทาสาธารณภัย",
     shortName: "บรรเทาสาธารณภัย",
     description: "รับแจ้งเหตุ ประสานกำลัง และติดตามสถานการณ์ฉุกเฉิน",
     availability: "setup",
@@ -47,7 +47,7 @@ const SYSTEM_DEFINITIONS = [
   Object.freeze({
     id: "water",
     productName: "Waterworks Management",
-    name: "ระบบบริหารจัดการการประปา",
+    name: "ระบบมอนิเตอร์การใช้น้ำประปา",
     shortName: "การประปา",
     description: "จัดการผู้ใช้น้ำ มิเตอร์ ค่าบริการ และแจ้งเหตุระบบประปา",
     availability: "setup",
